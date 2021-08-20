@@ -1,46 +1,26 @@
-// To parse this JSON data, do
-//
-//     final chatJsonModel = chatJsonModelFromJson(jsonString);
-
 import 'dart:convert';
 
-ChatJsonModel chatJsonModelFromJson(String str) => ChatJsonModel.fromJson(json.decode(str));
+List<ChatJsonModel> chatJsonModelFromJson(String str) => List<ChatJsonModel>.from(json.decode(str).map((x) => ChatJsonModel.fromJson(x)));
 
-String chatJsonModelToJson(ChatJsonModel data) => json.encode(data.toJson());
+String chatJsonModelToJson(List<ChatJsonModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ChatJsonModel {
   ChatJsonModel({
-    required this.messages,
+    required this.agent,
+    required this.payload,
   });
 
-  List<Message> messages;
+  String agent;
+  Payload payload;
 
   factory ChatJsonModel.fromJson(Map<String, dynamic> json) => ChatJsonModel(
-    messages: List<Message>.from(json["messages"].map((x) => Message.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "messages": List<dynamic>.from(messages.map((x) => x.toJson())),
-  };
-}
-
-class Message {
-  Message({
-    required this.payload,
-    required this.agent,
-  });
-
-  Payload payload;
-  String agent;
-
-  factory Message.fromJson(Map<String, dynamic> json) => Message(
-    payload: Payload.fromJson(json["payload"]),
     agent: json["agent"],
+    payload: Payload.fromJson(json["payload"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "payload": payload.toJson(),
     "agent": agent,
+    "payload": payload.toJson(),
   };
 }
 

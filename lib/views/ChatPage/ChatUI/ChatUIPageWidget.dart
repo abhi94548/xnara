@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:xnara/views/ChatPage/ChatUI/ChatUIBodyWidget.dart';
+import 'package:xnara/views/ChatPage/ChatUI/Widget/ChatUITextWidget.dart';
 import '../ChatUI/Widget/ChatUIInputWidget.dart';
-import '../../../viewModels/ChatUI/ChatUIViewModel.dart';
+import '../../../viewModels/ChatUIViewModel.dart';
 import '../../../config.dart';
 
 class ChatUIPageWidget extends StatefulWidget {
@@ -63,23 +64,11 @@ class _ChatUIPageWidgetState extends State<ChatUIPageWidget> {
                     ),
                     preferredSize: Size.fromHeight(50),
                   ),
+                  model.messages.isEmpty
+                      ? ChatUITextWidget(displayText: "No Messages yet. Start asking..")
+                      : ChatUIBodyWidget(messageModel: model.messages),
                   context.read<ChatUIViewModel>().error
-                      ? Expanded(
-                          child: Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Center(
-                                child: Text(
-                                    'Something went wrong. Please try again later',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 22,
-                                      color: AppConfig().iconColor,
-                                    )),
-                              ),
-                            ),
-                          ),
-                        )
+                      ? ChatUITextWidget(displayText: 'Something went wrong. Please try again later..')
                       : ChatUIFormWidget(context: context, model: model),
                 ],
               ),

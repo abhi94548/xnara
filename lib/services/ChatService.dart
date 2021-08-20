@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:xnara/models/ChatBot/chatJsonModel.dart';
-import '../models/ChatBot/chatMessageModel.dart';
+import '../models/ChatBot/chatJsonModel.dart';
 import '../config.dart';
 import '../models/ChatBot/chatInitModel.dart';
 
@@ -27,14 +26,15 @@ class WebServiceChatApi {
   Future<List<ChatJsonModel>> fetchMessageResponse(
       String message, String sessionId) async {
 
-    var formData = FormData.fromMap({
-      'message': message,
-      'sessionId': sessionId,
-    });
+
+    Map map = {
+      "message": message,
+      "sessionId": sessionId,
+    };
 
     final response = await dio.post(
       AppConfig().faqChat,
-      data: formData,
+      data: map,
       options: Options(
         responseType: ResponseType.json,
       ),
@@ -42,8 +42,10 @@ class WebServiceChatApi {
     try {
       if (response.statusCode == 200) {
         final result = response.data;
-        Iterable list = result['messages'];
-        return list.map((article) => chatJsonModelFromJson(article)).toList();
+        Iterable _list = result['messages'];
+        final List<ChatJsonModel> lists = chatJsonModelFromJson(jsonEncode(_list));
+        print(lists.toString());
+        return lists;
       } else {
         throw Exception('Unable to Connect');
       }

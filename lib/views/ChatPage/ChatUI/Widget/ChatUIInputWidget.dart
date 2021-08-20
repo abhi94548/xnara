@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/viewModels/ChatUI/ChatUIViewModel.dart';
+import '../../../../viewModels/ChatUIViewModel.dart';
 
 import '../../../../config.dart';
 
@@ -73,7 +73,7 @@ class _ChatUIFormWidgetState extends State<ChatUIFormWidget> {
                 mini: true,
                 onPressed: () {
                   if (_messageBoxKey.currentState!.validate()) {
-                    widget.context.read<ChatUIViewModel>().sendMessage(myController.text,widget.model.);
+                    widget.context.read<ChatUIViewModel>().sendMessage(myController.text,widget.model.chats!.sessionId.toString());
                   }
                 },
                 elevation: 1.0,

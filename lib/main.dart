@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:xnara/viewModels/ChatUI/ChatUIViewModel.dart';
+import 'package:xnara/viewModels/ChatUIViewModel.dart';
 import 'package:xnara/viewModels/ImageUploadViewModel.dart';
 import '/views/Widgets/PlatformScaffoldWidget.dart';
 import 'config.dart';
