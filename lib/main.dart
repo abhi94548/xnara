@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:xnara/viewModels/ChatUI/ChatUIViewModel.dart';
+import 'package:xnara/viewModels/ImageUploadViewModel.dart';
 import '/views/Widgets/PlatformScaffoldWidget.dart';
 import 'config.dart';
 import 'viewModels/HomePageViewModel.dart';
@@ -25,6 +27,8 @@ class MyApp extends StatelessWidget {
       home: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => HomePageViewModel()),
+          ChangeNotifierProvider(create: (_) => ChatUIViewModel()),
+          ChangeNotifierProvider(create: (_) => ImageUploadViewModel()),
         ],
         child: NavigationTab(),
       ),
@@ -103,16 +107,12 @@ class _NavigationTabState extends State<NavigationTab> {
           switch (index) {
             case 0:
               return HomePageWidget();
-              break;
             case 1:
               return MyUploadsPageWidget();
-              break;
             case 2:
               return ChatHomePageWidget();
-              break;
             default:
               return SettingsPageWidget();
-              break;
           }
         });
   }

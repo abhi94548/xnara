@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../ChatPage/ChatUI/ChatUIPageWidget.dart';
+import '../../views/Widgets/HeadTextWidget.dart';
 import '../../config.dart';
 
 class ChatHomePageWidget extends StatelessWidget {
@@ -7,17 +9,27 @@ class ChatHomePageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: AppBar(
-          title: Text('FAQ\'s'),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                HeadTextWidget(headText: 'Faq\'s'),
+              ],
+            ),
+          ),
         ),
       ),
       floatingActionButton: new FloatingActionButton(
         elevation: 0.0,
         child: new Icon(Icons.chat),
         backgroundColor: AppConfig().primaryColor,
-        onPressed: (){},
+        onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => ChatUIPageWidget())
+        )
       ),
     );
   }

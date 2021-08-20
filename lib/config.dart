@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 
 class AppConfig {
   Color get primaryColor => Color(0xFF0097A7);
-  Color get secondaryColor => Colors.black38;
-  Color get iconColor => Color(0xFFFFFFFF);
+  Color get secondaryColor => Colors.black12;
+  Color get iconColor => Color(0xFF222222);
+  Color get botColor => Color(0xFFe3f2fd);
+  Color get userColor => Color(0xFF0097A7);
   String home = "Home";
   String myUploads = "My Uploads";
   String faq = "Faq";
@@ -13,6 +15,7 @@ class AppConfig {
   String foodApiList = "http://164.52.211.147/list";
   String foodApiInference = "http://164.52.211.147/inference";
   String foodApiAdd = "http://164.52.211.147/add";
-  String faqInit = "http://164.52.211.147/init";
-  String faqChat = "http://164.52.211.147/chat";
+  String faqInit = "http://164.52.211.147/bot/init";
+  String faqChat = "http://164.52.211.147/bot/chat";
+  String chatUIHeading = "Ask me Anything";
 }
