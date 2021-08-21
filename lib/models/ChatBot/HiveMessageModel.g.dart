@@ -17,18 +17,15 @@ class ChatModelHiveAdaptor extends TypeAdapter<HiveMessages> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return HiveMessages(
-      agent: fields[0] as String,
-      message: fields[1] as String,
+      message: fields[0] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveMessages obj) {
     writer
-      ..writeByte(2)
-      ..writeByte(0)
-      ..write(obj.agent)
       ..writeByte(1)
+      ..writeByte(0)
       ..write(obj.message);
   }
 

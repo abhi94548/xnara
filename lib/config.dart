@@ -7,7 +7,7 @@ class AppConfig {
   Color get secondaryColor => Colors.black12;
   Color get iconColor => Color(0xFF222222);
   Color get botColor => Color(0xFFe3f2fd);
-  Color get userColor => Color(0xFF0097A7);
+  Color get userColor => Color(0xFF80deea);
   String home = "Home";
   String myUploads = "My Uploads";
   String faq = "Faq";

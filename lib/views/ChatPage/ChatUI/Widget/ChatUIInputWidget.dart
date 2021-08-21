@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../../viewModels/ChatUIViewModel.dart';
-
+import 'package:intl/intl.dart';
+import '../../../../viewModels/ChatUI/ChatUIViewModel.dart';
 import '../../../../config.dart';
 
 class ChatUIFormWidget extends StatefulWidget {
@@ -48,11 +48,6 @@ class _ChatUIFormWidgetState extends State<ChatUIFormWidget> {
                   showCursor: false,
                   controller: myController,
                   enableSuggestions: true,
-                  validator: (value) {
-                    if (value!.isNotEmpty) {
-                      return null;
-                    }
-                  },
                   onChanged: (value) => myController.text = value,
                   onTap: () => widget.scrollFunction(),
                   decoration: InputDecoration(
@@ -78,7 +73,7 @@ class _ChatUIFormWidgetState extends State<ChatUIFormWidget> {
               child: FloatingActionButton(
                 mini: true,
                 onPressed: () {
-                  if (_messageBoxKey.currentState!.validate()) {
+                  if (myController.text.isNotEmpty) {
                     widget.context.read<ChatUIViewModel>().addUserMessage(
                         myController.text,
                         widget.model.chats!.sessionId.toString());

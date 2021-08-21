@@ -2,19 +2,24 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import '../config.dart';
-import '../models/FoodApi/food_Model.dart';
-
 
 class WebServiceFoodApi {
   var dio = new Dio();
 
-  Future<FoodModel> fetchFoodList() async {
+  Future<Map<String, dynamic>> fetchFoodList() async {
 
-    final response = await dio.get(AppConfig().foodApiList);
 
-    if(response.statusCode == 200){
-      print('called' + response.data.toString());
-      final FoodModel _lists = foodModelFromJson(jsonEncode(response.data));
+    final response = await dio.get(
+      AppConfig().foodApiList,
+      options: Options(
+        responseType: ResponseType.json,
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      var reply = response.data;
+      //final FoodModel _lists = foodModelFromJson(jsonEncode(response.data));
+      var _lists = reply;
       return _lists;
     } else {
       throw Exception('Unable to Connect');

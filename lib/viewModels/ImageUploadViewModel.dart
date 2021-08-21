@@ -5,15 +5,16 @@ import '/models/FoodApi/food_Model.dart';
 
 class ImageUploadViewModel extends ChangeNotifier{
 
-  late FoodModel foods;
+  //late FoodModel foods;
+  late Map<String,dynamic> foods = {};
   bool loading = false;
 
-  Future<FoodModel> fetchPredictions(String imagePath) async {
+  fetchPredictions(String imagePath) async {
     loading = true;
-    FoodModel _list = await WebServiceImageUpload().imageUpload(imagePath);
+    //FoodModel _list = await WebServiceImageUpload().imageUpload(imagePath);
+    var _list = await WebServiceImageUpload().imageUpload(imagePath);
     this.foods = _list;
     loading = false;
     notifyListeners();
-    return foods;
   }
 }

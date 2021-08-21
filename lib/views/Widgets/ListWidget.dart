@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class HomePageListWidget extends StatelessWidget {
-   HomePageListWidget({required this.foodName,required this.images});
+class ListWidget extends StatelessWidget {
+  const ListWidget({required this.foodName, required this.images});
 
-   final String foodName;
-   final String images;
+  final String foodName;
+  final String images;
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +16,6 @@ class HomePageListWidget extends StatelessWidget {
           subtitle: Text(images),
         ),
       ),
-    ) ;
+    );
   }
 }

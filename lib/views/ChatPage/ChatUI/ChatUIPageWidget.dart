@@ -6,7 +6,7 @@ import 'package:xnara/views/ChatPage/ChatUI/ChatUIBodyWidget.dart';
 import 'package:xnara/views/ChatPage/ChatUI/Widget/ChatUIAppBarWidget.dart';
 import 'package:xnara/views/ChatPage/ChatUI/Widget/ChatUITextWidget.dart';
 import '../ChatUI/Widget/ChatUIInputWidget.dart';
-import '../../../viewModels/ChatUIViewModel.dart';
+import '../../../viewModels/ChatUI/ChatUIViewModel.dart';
 
 class ChatUIPageWidget extends StatefulWidget {
   const ChatUIPageWidget({Key? key}) : super(key: key);
@@ -63,7 +63,7 @@ class _ChatUIPageWidgetState extends State<ChatUIPageWidget> {
                                     displayText:
                                         "No Messages yet. Start asking..")
                                 : ChatUIBodyWidget(
-                                    model.messages, _scrollController),
+                                    model.messages, _scrollController,scrollFunction),
                             context.read<ChatUIViewModel>().error
                                 ? ChatUITextWidget(
                                     displayText:
@@ -71,7 +71,7 @@ class _ChatUIPageWidgetState extends State<ChatUIPageWidget> {
                                 : ChatUIFormWidget(
                                     context: context,
                                     model: model,
-                                    scrollFunction: scrollFunction()),
+                                    scrollFunction: scrollFunction),
                           ],
                         ),
                       );

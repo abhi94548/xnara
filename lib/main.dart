@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
-import 'package:xnara/viewModels/ChatUIViewModel.dart';
+import 'package:xnara/viewModels/ChatUI/ChatUIViewModel.dart';
 import 'package:xnara/viewModels/ImageUploadViewModel.dart';
 import '/views/Widgets/PlatformScaffoldWidget.dart';
 import 'config.dart';
@@ -34,14 +34,7 @@ class MyApp extends StatelessWidget {
         primaryColor: AppConfig().primaryColor,
       ),
       debugShowCheckedModeBanner: false,
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => HomePageViewModel()),
-          ChangeNotifierProvider(create: (_) => ChatUIViewModel()),
-          ChangeNotifierProvider(create: (_) => ImageUploadViewModel()),
-        ],
-        child: NavigationTab(),
-      ),
+      home: NavigationTab(),
     );
   }
 }
