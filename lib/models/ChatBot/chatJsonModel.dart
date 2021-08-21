@@ -1,14 +1,17 @@
 import 'dart:convert';
 
+
 List<ChatJsonModel> chatJsonModelFromJson(String str) => List<ChatJsonModel>.from(json.decode(str).map((x) => ChatJsonModel.fromJson(x)));
 
 String chatJsonModelToJson(List<ChatJsonModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 
 class ChatJsonModel {
   ChatJsonModel({
     required this.agent,
     required this.payload,
   });
+
 
   String agent;
   Payload payload;

@@ -5,10 +5,14 @@ import '../../../../viewModels/ChatUIViewModel.dart';
 import '../../../../config.dart';
 
 class ChatUIFormWidget extends StatefulWidget {
-  ChatUIFormWidget({required this.context, required this.model});
+  ChatUIFormWidget(
+      {required this.context,
+      required this.model,
+      required this.scrollFunction});
 
   final BuildContext context;
   final ChatUIViewModel model;
+  final Function scrollFunction;
 
   @override
   _ChatUIFormWidgetState createState() => _ChatUIFormWidgetState();
@@ -50,8 +54,10 @@ class _ChatUIFormWidgetState extends State<ChatUIFormWidget> {
                     }
                   },
                   onChanged: (value) => myController.text = value,
+                  onTap: () => widget.scrollFunction(),
                   decoration: InputDecoration(
                     isDense: true,
+                    hintText: "Enter here",
                     focusedBorder: OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(10.0),
                       borderSide: BorderSide(
@@ -73,7 +79,14 @@ class _ChatUIFormWidgetState extends State<ChatUIFormWidget> {
                 mini: true,
                 onPressed: () {
                   if (_messageBoxKey.currentState!.validate()) {
-                    widget.context.read<ChatUIViewModel>().sendMessage(myController.text,widget.model.chats!.sessionId.toString());
+                    widget.context.read<ChatUIViewModel>().addUserMessage(
+                        myController.text,
+                        widget.model.chats!.sessionId.toString());
+                    widget.context.read<ChatUIViewModel>().sendMessage(
+                        myController.text,
+                        widget.model.chats!.sessionId.toString());
+                    myController.clear();
+                    widget.scrollFunction();
                   }
                 },
                 elevation: 1.0,
