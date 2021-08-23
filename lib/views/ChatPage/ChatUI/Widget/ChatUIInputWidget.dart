@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import '../../../../viewModels/ChatUI/ChatUIViewModel.dart';
 import '../../../../config.dart';
 
@@ -45,10 +44,8 @@ class _ChatUIFormWidgetState extends State<ChatUIFormWidget> {
                 width: MediaQuery.of(context).size.width * 0.75,
                 child: TextFormField(
                   keyboardType: TextInputType.text,
-                  showCursor: false,
                   controller: myController,
                   enableSuggestions: true,
-                  onChanged: (value) => myController.text = value,
                   onTap: () => widget.scrollFunction(),
                   decoration: InputDecoration(
                     isDense: true,

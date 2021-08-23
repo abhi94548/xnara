@@ -1,56 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../views/Widgets/LoadingTextWidget.dart';
 import 'ChatUI/Widget/ChatHomeListWidget.dart';
 import '../../viewModels/ChatUI/ChatHomeViewModel.dart';
-import '../ChatPage/ChatUI/ChatUIPageWidget.dart';
 import '../../views/Widgets/HeadTextWidget.dart';
-import '../../config.dart';
 
 class ChatHomePageWidget extends StatelessWidget {
   const ChatHomePageWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ChatHomeViewModel(),
-      child: Scaffold(
-        body: SafeArea(
-          child: Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                HeadTextWidget(headText: 'Faq\'s'),
-                Flexible(
-                  child: Consumer<ChatHomeViewModel>(
-                    builder: (context, model, _) {
-                      context.read<ChatHomeViewModel>().getAllSessions();
-                      return Container(
-                        child: model.sessions.isEmpty
-                            ? Center(
-                                child: Text(
-                                  'No Messages Found.',
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    color: AppConfig().iconColor,
-                                  ),
-                                ),
-                              )
-                            : ChatHomeListWidget(sessions: model.sessions),
-                      );
-                    },
-                  ),
+    var sessionList =
+        Provider.of<ChatHomeViewModel>(context, listen: false).getAllSessions();
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HeadTextWidget(headText: 'Faq\'s',routeName : 'chatPage'),
+              Flexible(
+                child: FutureBuilder(
+                  future: sessionList,
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.data == null) {
+                        print("1");
+                        return LoadingTextWidget(
+                            loadingText: "No Messages Found");
+                      } else {
+                        print("3 called");
+                        return ChatHomeListWidget(sessions: snapshot.data);
+                      }
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.active || snapshot.connectionState == ConnectionState.waiting) {
+                      return LoadingTextWidget(
+                          loadingText: "Loading Please Wait..");
+                    } else {
+                      print("2");
+                      return ChatHomeListWidget(sessions: snapshot.data);
+                    }
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-        floatingActionButton: new FloatingActionButton(
-            elevation: 0.0,
-            child: new Icon(Icons.chat),
-            backgroundColor: AppConfig().primaryColor,
-            onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => ChatUIPageWidget()))),
       ),
     );
   }

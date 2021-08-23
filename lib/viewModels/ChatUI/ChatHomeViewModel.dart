@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:xnara/models/ChatBot/HiveMessageModel.dart';
-import '../../models/ChatBot/MessageModel.dart';
 
+import '../../models/ChatBot/HiveMessageModel.dart';
 
 class ChatHomeViewModel extends ChangeNotifier {
-  bool error = false;
-  late List<ChatMessage> messages = [];
-  late List<dynamic> sessions =[];
+  late List<dynamic> sessions;
 
-  getAllSessions() async {
+  Future<List<dynamic>?> getAllSessions() async {
     var box = await Hive.openBox<HiveMessages>('Messages');
+    print("code runned");
     sessions = box.keys.toList();
-    notifyListeners();
+    if (sessions.isEmpty) {
+      notifyListeners();
+      return null;
+    } else {
+      notifyListeners();
+      return sessions;
+    }
   }
 }

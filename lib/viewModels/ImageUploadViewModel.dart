@@ -1,20 +1,36 @@
 import 'package:flutter/cupertino.dart';
-import '/services/ImageUploadService.dart';
-import '/models/FoodApi/food_Model.dart';
+import '../services/homePageService.dart';
+import '../services/ImageUploadService.dart';
 
-
-class ImageUploadViewModel extends ChangeNotifier{
-
+class ImageUploadViewModel extends ChangeNotifier {
   //late FoodModel foods;
-  late Map<String,dynamic> foods = {};
-  bool loading = false;
+  late Map<String, dynamic> responseList = {};
+  late bool successUpload = false;
+  String category = "";
 
-  fetchPredictions(String imagePath) async {
-    loading = true;
-    //FoodModel _list = await WebServiceImageUpload().imageUpload(imagePath);
+  Future<Map<String, dynamic>?> fetchPredictions(String imagePath) async {
+    var _foodList = await WebServiceFoodApi().fetchFoodList();
     var _list = await WebServiceImageUpload().imageUpload(imagePath);
-    this.foods = _list;
-    loading = false;
+    if (_foodList!.isEmpty || _list.isEmpty) {
+      notifyListeners();
+      return null;
+    } else {
+      responseList.putIfAbsent("predictionList", () => _list);
+      responseList.putIfAbsent("foodList", () => _foodList);
+      notifyListeners();
+      return responseList;
+    }
+  }
+
+  addCategoryImage(String imagePath, String category) async {
+    var _list =
+        await WebServiceImageUpload().categoryImage(imagePath, category);
+    successUpload = _list;
+    notifyListeners();
+  }
+
+  setCategory(String category) async {
+    this.category = category;
     notifyListeners();
   }
 }

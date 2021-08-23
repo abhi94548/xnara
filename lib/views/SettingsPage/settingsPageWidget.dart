@@ -17,7 +17,7 @@ class SettingsPageWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                HeadTextWidget(headText: 'Settings'),
+                HeadTextWidget(headText: 'Settings',routeName : 'settings'),
                 SizedBox(
                   height: 10,
                 ),

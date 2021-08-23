@@ -3,19 +3,18 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
-import 'package:xnara/viewModels/ChatUI/ChatUIViewModel.dart';
-import 'package:xnara/viewModels/ImageUploadViewModel.dart';
-import '/views/Widgets/PlatformScaffoldWidget.dart';
+import 'package:provider/provider.dart';
+
 import 'config.dart';
 import 'models/ChatBot/HiveMessageModel.dart';
+import 'viewModels/ChatUI/ChatHomeViewModel.dart';
 import 'viewModels/HomePageViewModel.dart';
 import 'views/ChatPage/chatHomePageWidget.dart';
 import 'views/HomePage/homePageWidget.dart';
 import 'views/MyUploadsPage/myUploadsPageWidget.dart';
 import 'views/SettingsPage/settingsPageWidget.dart';
-
+import 'views/Widgets/PlatformScaffoldWidget.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,12 +29,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primaryColor: AppConfig().primaryColor,
-      ),
-      debugShowCheckedModeBanner: false,
-      home: NavigationTab(),
-    );
+        theme: ThemeData(
+          primaryColor: AppConfig().primaryColor,
+        ),
+        debugShowCheckedModeBanner: false,
+        home: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => HomePageViewModel()),
+            ChangeNotifierProvider(create: (_) => ChatHomeViewModel()),
+          ],
+          child: NavigationTab(),
+        ));
   }
 }
 
@@ -64,59 +68,59 @@ class _NavigationTabState extends State<NavigationTab> {
   @override
   Widget build(BuildContext context) {
     return PlatformScaffoldWidget(
-        body: _children[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: onTabTapped, // new
-          currentIndex: _currentIndex,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          selectedItemColor: AppConfig().primaryColor,
-          enableFeedback: false,
-          unselectedFontSize: 14,
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: AppConfig().home,
-                backgroundColor: AppConfig().primaryColor),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.cloud_upload),
-                label: AppConfig().myUploads,
-                backgroundColor: AppConfig().primaryColor),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.support_agent),
-                label: AppConfig().faq,
-                backgroundColor: AppConfig().primaryColor),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: AppConfig().setting,
-                backgroundColor: AppConfig().primaryColor)
-          ],
-        ),
-        tabBar: CupertinoTabBar(items: [
+      body: _children[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: onTabTapped,
+        // new
+        currentIndex: _currentIndex,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        selectedItemColor: AppConfig().primaryColor,
+        unselectedFontSize: 14,
+        type: BottomNavigationBarType.fixed,
+        items: [
           BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.home), label: AppConfig().home),
+              icon: Icon(Icons.home),
+              label: AppConfig().home,
+              backgroundColor: AppConfig().primaryColor),
           BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.cloud_upload),
-              label: AppConfig().myUploads),
+              icon: Icon(Icons.cloud_upload),
+              label: AppConfig().myUploads,
+              backgroundColor: AppConfig().primaryColor),
           BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.question_circle),
-              label: AppConfig().faq),
+              icon: Icon(Icons.support_agent),
+              label: AppConfig().faq,
+              backgroundColor: AppConfig().primaryColor),
           BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.settings), label: AppConfig().setting)
-        ]),
-        backgroundColor: AppConfig().primaryColor,
-        tabBuilder: (context, index) {
-          switch (index) {
-            case 0:
-              return HomePageWidget();
-            case 1:
-              return MyUploadsPageWidget();
-            case 2:
-              return ChatHomePageWidget();
-            default:
-              return SettingsPageWidget();
-          }
-        });
+              icon: Icon(Icons.settings),
+              label: AppConfig().setting,
+              backgroundColor: AppConfig().primaryColor)
+        ],
+      ),
+      tabBar: CupertinoTabBar(items: [
+        BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.home), label: AppConfig().home),
+        BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.cloud_upload),
+            label: AppConfig().myUploads),
+        BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.question_circle), label: AppConfig().faq),
+        BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.settings), label: AppConfig().setting)
+      ]),
+      backgroundColor: AppConfig().primaryColor,
+      tabBuilder: (context, index) {
+        switch (index) {
+          case 0:
+            return HomePageWidget();
+          case 1:
+            return MyUploadsPageWidget();
+          case 2:
+            return ChatHomePageWidget();
+          default:
+            return SettingsPageWidget();
+        }
+      },
+    );
   }
 }

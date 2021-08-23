@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:xnara/views/ChatPage/ChatUI/ChatUIBodyWidget.dart';
-import 'package:xnara/views/ChatPage/ChatUI/Widget/ChatUIAppBarWidget.dart';
-import 'package:xnara/views/ChatPage/ChatUI/Widget/ChatUITextWidget.dart';
+import '../../../views/ChatPage/ChatUI/ChatUIBodyWidget.dart';
+import '../../../views/ChatPage/ChatUI/Widget/ChatUITextWidget.dart';
+import '../../../config.dart';
 import '../ChatUI/Widget/ChatUIInputWidget.dart';
 import '../../../viewModels/ChatUI/ChatUIViewModel.dart';
 
@@ -40,45 +40,73 @@ class _ChatUIPageWidgetState extends State<ChatUIPageWidget> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => ChatUIViewModel(),
-      child: Scaffold(
-        body: SafeArea(
-          child: Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ChatUIAppBarWidget(),
-                Flexible(
-                  child: Consumer<ChatUIViewModel>(
-                    builder: (context, model, _) {
-                      context.read<ChatUIViewModel>().initSession();
-                      return Container(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            model.messages.isEmpty
-                                ? ChatUITextWidget(
-                                    displayText:
-                                        "No Messages yet. Start asking..")
-                                : ChatUIBodyWidget(
-                                    model.messages, _scrollController,scrollFunction),
-                            context.read<ChatUIViewModel>().error
-                                ? ChatUITextWidget(
-                                    displayText:
-                                        'Something went wrong. Please try again later..')
-                                : ChatUIFormWidget(
-                                    context: context,
-                                    model: model,
-                                    scrollFunction: scrollFunction),
-                          ],
-                        ),
-                      );
-                    },
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          appBar: PreferredSize(
+            child: AppBar(
+              backgroundColor: AppConfig().primaryColor,
+              leading: IconButton(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: Icon(Icons.arrow_back),
+              ),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                        radius: 20,
+                        backgroundImage: NetworkImage(
+                            'https://via.placeholder.com/140x100')),
                   ),
-                ),
-              ],
+                  Text(
+                    AppConfig().chatUIHeading,
+                  ),
+                ],
+              ),
+            ),
+            preferredSize: Size.fromHeight(50),
+          ),
+          body: SafeArea(
+            child: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: Consumer<ChatUIViewModel>(
+                      builder: (context, model, _) {
+                        context.read<ChatUIViewModel>().initSession();
+                        return Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              model.messages.isEmpty
+                                  ? ChatUITextWidget(
+                                      displayText:
+                                          "No Messages yet. Start asking..")
+                                  : ChatUIBodyWidget(
+                                      model.messages, _scrollController,scrollFunction),
+                              context.read<ChatUIViewModel>().error
+                                  ? ChatUITextWidget(
+                                      displayText:
+                                          'Something went wrong. Please try again later..')
+                                  : ChatUIFormWidget(
+                                      context: context,
+                                      model: model,
+                                      scrollFunction: scrollFunction),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

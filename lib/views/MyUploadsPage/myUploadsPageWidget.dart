@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xnara/views/Widgets/LoadingTextWidget.dart';
 import '../../views/Widgets/HeadTextWidget.dart';
 
 import '../../config.dart';
@@ -17,19 +18,9 @@ class MyUploadsPageWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                HeadTextWidget(headText: 'My Uploads'),
+                HeadTextWidget(headText: 'My Uploads',routeName : 'myUploadPage'),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.4,),
-                Container(
-                  child: Center(
-                    child: Text(
-                      'No Uploads Yet.',
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: AppConfig().iconColor,
-                      ),
-                    ),
-                  ),
-                )
+                LoadingTextWidget(loadingText: "No Uploads yet")
               ],
             ),
           ),
