@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class ChatHomeListWidget extends StatelessWidget {
   const ChatHomeListWidget({required this.sessions});
 
+  ///List of previous sessions by the user
   final List<dynamic> sessions;
 
   @override
@@ -10,7 +11,6 @@ class ChatHomeListWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListView.builder(
-        scrollDirection: Axis.vertical,
         itemCount: sessions.length,
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
@@ -18,10 +18,10 @@ class ChatHomeListWidget extends StatelessWidget {
             elevation: 2.0,
             child: ListTile(
               title: Text(
-                "Session Number "+(index + 1).toString(),
+                'Session Number ${index + 1}',
               ),
               subtitle: Text(
-                "Agent Code : " + sessions[index].toString(),
+                'Agent Code : ${sessions[index]}',
               ),
 
             ),

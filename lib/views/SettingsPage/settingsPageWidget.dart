@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../views/Widgets/HeadTextWidget.dart';
 
 import '../../config.dart';
+import '../../views/Widgets/HeadTextWidget.dart';
 
 class SettingsPageWidget extends StatelessWidget {
   const SettingsPageWidget({Key? key}) : super(key: key);
@@ -10,62 +10,54 @@ class SettingsPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                HeadTextWidget(headText: 'Settings',routeName : 'settings'),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  width: double.infinity,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            HeadTextWidget(headText: 'Settings',routeName : 'settings'),
+            const SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
                       children: <Widget>[
-                        Container(
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.swap_vertical_circle,
-                                size: 20,
-                                color: AppConfig().iconColor,
-                              ),
-                              SizedBox(
-                                width: 8.0,
-                              ),
-                              Text(
-                                'Notification',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            ],
-                          ),
+                        Icon(
+                          Icons.swap_vertical_circle,
+                          size: 20,
+                          color: AppConfig().iconColor,
                         ),
-                        Switch(
-                          value: true,
-                          activeColor: AppConfig().primaryColor,
-                          onChanged: (value) {
-                            value = false;
-                          },
+                        const SizedBox(
+                          width: 8.0,
+                        ),
+                        const Text(
+                          'Notification',
+                          style: TextStyle(fontSize: 18),
                         ),
                       ],
                     ),
-                  ),
+                    Switch(
+                      value: true,
+                      activeColor: AppConfig().primaryColor,
+                      onChanged: (bool value) {
+                        value = false;
+                      },
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: Divider(
-                    color: AppConfig().iconColor,
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+              child: Divider(
+                color: AppConfig().iconColor,
+              ),
+            ),
+          ],
         ),
       ),
     );

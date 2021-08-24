@@ -1,11 +1,10 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:xnara/models/ChatBot/HiveMessageModel.dart';
 import '../../models/ChatBot/MessageModel.dart';
-import '../../models/ChatBot/chatJsonModel.dart';
-import '../../models/ChatBot/chatInitModel.dart';
+import '../../models/ChatBot/chat_Json_Model.dart';
+import '../../models/ChatBot/chat_Init_Model.dart';
 import '../../services/ChatService.dart';
 
 class ChatUIViewModel extends ChangeNotifier {

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:xnara/models/ChatBot/chatInitModel.dart';
-import '../../../../viewModels/ChatUI/ChatUIViewModel.dart';
-import '../../../../config.dart';
+import 'package:xnara/models/ChatBot/chat_Init_Model.dart';
 
-class ChatUIFormWidget extends StatefulWidget {
+import '../../../../config.dart';
+import '../../../../viewModels/ChatUI/ChatUIViewModel.dart';
+
+class ChatUIFormWidget extends StatelessWidget {
   ChatUIFormWidget(
       {required this.context,
       required this.model,
@@ -14,13 +15,8 @@ class ChatUIFormWidget extends StatefulWidget {
   final ChatInitModel model;
   final Function scrollFunction;
 
-  @override
-  _ChatUIFormWidgetState createState() => _ChatUIFormWidgetState();
-}
-
-class _ChatUIFormWidgetState extends State<ChatUIFormWidget> {
-  final _messageBoxKey = GlobalKey<FormState>();
-  final myController = TextEditingController();
+  final GlobalKey<FormState> _messageBoxKey = GlobalKey<FormState>();
+  final TextEditingController myController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,37 +24,35 @@ class _ChatUIFormWidgetState extends State<ChatUIFormWidget> {
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
           border: Border(
-        top: BorderSide(width: 1.0, color: AppConfig().secondaryColor),
+        top: BorderSide(color: AppConfig().secondaryColor),
       )),
       child: Form(
         key: _messageBoxKey,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Container(
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.75,
                 child: TextFormField(
                   keyboardType: TextInputType.text,
                   controller: myController,
-                  enableSuggestions: true,
-                  onTap: () => widget.scrollFunction(),
+                  onTap: () => scrollFunction(),
                   decoration: InputDecoration(
                     isDense: true,
-                    hintText: "Enter here",
+                    hintText: 'Enter here',
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
                           color: AppConfig().secondaryColor, width: 1.0),
                     ),
-                    contentPadding: EdgeInsets.all(12),
+                    contentPadding: const EdgeInsets.all(12),
                     border: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
                           color: AppConfig().secondaryColor, width: 1.0),
                     ),
@@ -72,19 +66,17 @@ class _ChatUIFormWidgetState extends State<ChatUIFormWidget> {
                 mini: true,
                 onPressed: () {
                   if (myController.text.isNotEmpty) {
-                    widget.context.read<ChatUIViewModel>().addUserMessage(
-                        myController.text,
-                        widget.model.sessionId.toString());
-                    widget.context.read<ChatUIViewModel>().sendMessage(
-                        myController.text,
-                        widget.model.sessionId.toString());
+                    context.read<ChatUIViewModel>().addUserMessage(
+                        myController.text, model.sessionId.toString());
+                    context.read<ChatUIViewModel>().sendMessage(
+                        myController.text, model.sessionId.toString());
                     myController.clear();
-                    widget.scrollFunction();
+                    scrollFunction();
                   }
                 },
                 elevation: 1.0,
-                child: new Icon(Icons.send),
                 backgroundColor: AppConfig().primaryColor,
+                child: const Icon(Icons.send),
               ),
             )
           ],

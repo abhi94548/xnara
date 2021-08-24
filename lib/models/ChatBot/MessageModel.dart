@@ -1,6 +1,6 @@
-class ChatMessage{
+class ChatMessage {
+  ChatMessage({required this.agent, required this.message});
+
   String agent;
   String message;
-
-  ChatMessage({required this.agent,required this.message});
 }

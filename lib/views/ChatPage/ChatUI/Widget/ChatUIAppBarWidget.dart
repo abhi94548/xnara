@@ -11,11 +11,9 @@ class ChatUIAppBarWidget extends StatelessWidget {
       backgroundColor: AppConfig().primaryColor,
       leading: IconButton(
         onPressed: () => Navigator.of(context).pop(),
-        icon: Icon(Icons.arrow_back),
+        icon: const Icon(Icons.arrow_back),
       ),
       title: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),

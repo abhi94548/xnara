@@ -8,15 +8,15 @@ class AppConfig {
   Color get iconColor => Color(0xFF222222);
   Color get botColor => Color(0xFFe3f2fd);
   Color get userColor => Color(0xFF80deea);
-  String home = "Home";
-  String myUploads = "My Uploads";
-  String faq = "Faq";
-  String setting = "Settings";
-  String foodApiList = "http://164.52.211.147/list";
-  String foodApiInference = "http://164.52.211.147/inference";
-  String foodApiAdd = "http://164.52.211.147/add";
-  String faqInit = "http://164.52.211.147/bot/init";
-  String faqChat = "http://164.52.211.147/bot/chat";
-  String chatUIHeading = "Ask me Anything";
-  String chatUIAgentImage = "https://via.placeholder.com/140x100";
+  final String home = "Home";
+  final String myUploads = "My Uploads";
+  final String faq = "Faq";
+  final String setting = "Settings";
+  final String foodApiList = "http://164.52.211.147/list";
+  final String foodApiInference = "http://164.52.211.147/inference";
+  final String foodApiAdd = "http://164.52.211.147/add";
+  final String faqInit = "http://164.52.211.147/bot/init";
+  final String faqChat = "http://164.52.211.147/bot/chat";
+  final String chatUIHeading = "Ask me Anything";
+  final String chatUIAgentImage = "https://via.placeholder.com/140x100";
 }

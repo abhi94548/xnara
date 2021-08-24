@@ -1,33 +1,26 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import '../config.dart';
 
 class WebServiceFoodApi {
-  var dio = new Dio();
+  Dio dio = Dio();
 
-  Future<Map<String, dynamic>?> fetchFoodList() async {
-    final response;
-
+  Future<Map<String, dynamic>> fetchFoodList() async {
     try {
-      response = await dio
-          .get(
+      final Response<dynamic> response = await dio.get(
         AppConfig().foodApiList,
         options: Options(
           responseType: ResponseType.json,
         ),
       );
       if (response.statusCode == 200) {
-        var reply = response.data;
-        //final FoodModel _lists = foodModelFromJson(jsonEncode(response.data));
-        var _lists = reply;
+        final dynamic reply = response.data;
+        final Map<String, dynamic> _lists = reply as Map<String, dynamic>;
         return _lists;
+      } else {
+        throw Exception('Something went wrong');
       }
-    }
-    on DioError catch(e){
-      if (e.type == DioErrorType.connectTimeout || e.type == DioErrorType.receiveTimeout) {
-        return null;
-      }
+    } catch (e) {
+      throw Exception('Something went wrong');
     }
   }
 }

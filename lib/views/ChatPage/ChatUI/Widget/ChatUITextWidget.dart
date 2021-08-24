@@ -4,7 +4,7 @@ import '../../../../config.dart';
 
 class ChatUITextWidget extends StatelessWidget {
 
-  ChatUITextWidget({required this.displayText});
+  const ChatUITextWidget({required this.displayText});
   
   final String displayText;
 

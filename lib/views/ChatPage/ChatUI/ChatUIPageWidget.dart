@@ -2,39 +2,24 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:xnara/models/ChatBot/chat_Init_Model.dart';
 import 'package:xnara/views/ChatPage/ChatUI/Widget/ChatUIAppBarWidget.dart';
 import 'package:xnara/views/Widgets/LoadingTextWidget.dart';
+
+import '../../../viewModels/ChatUI/ChatUIViewModel.dart';
 import '../../../views/ChatPage/ChatUI/ChatUIBodyWidget.dart';
 import '../../../views/ChatPage/ChatUI/Widget/ChatUITextWidget.dart';
-import '../../../config.dart';
 import '../ChatUI/Widget/ChatUIFormWidget.dart';
-import '../../../viewModels/ChatUI/ChatUIViewModel.dart';
 
-class ChatUIPageWidget extends StatefulWidget {
-  const ChatUIPageWidget({Key? key}) : super(key: key);
 
-  @override
-  _ChatUIPageWidgetState createState() => _ChatUIPageWidgetState();
-}
-
-class _ChatUIPageWidgetState extends State<ChatUIPageWidget> {
+class ChatUIPageWidget extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
 
   scrollFunction() {
     if (_scrollController.hasClients) {
       Timer(
-          Duration(milliseconds: 300),
+          const Duration(milliseconds: 300),
           () => _scrollController
               .jumpTo(_scrollController.position.maxScrollExtent));
     }
@@ -42,14 +27,14 @@ class _ChatUIPageWidgetState extends State<ChatUIPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var sessionId =
+    final Future<ChatInitModel?> sessionId =
         Provider.of<ChatUIViewModel>(context, listen: false).initSession();
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        appBar: PreferredSize(
-          child: ChatUIAppBarWidget(),
+        appBar: const PreferredSize(
           preferredSize: Size.fromHeight(50),
+          child: ChatUIAppBarWidget(),
         ),
         body: SafeArea(
           child: Container(
@@ -58,27 +43,26 @@ class _ChatUIPageWidgetState extends State<ChatUIPageWidget> {
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.data == null) {
-                    return LoadingTextWidget(
+                    return const LoadingTextWidget(
                         loadingText:
-                            "Something went wrong. Please try again later..");
+                            'Something went wrong. Please try again later..');
                   } else {
                     return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Consumer<ChatUIViewModel>(
-                          builder: (context, model, _) {
+                          builder: (BuildContext context, ChatUIViewModel model, _) {
                             return model.messages.isEmpty
                                 ? ChatUITextWidget(
                                     displayText:
-                                        "No Messages yet. Start asking..")
+                                        'No Messages yet. Start asking..')
                                 : ChatUIBodyWidget(model.messages,
                                     _scrollController, scrollFunction);
                           },
                         ),
                         ChatUIFormWidget(
                             context: context,
-                            model: snapshot.data,
+                            model: snapshot.data as ChatInitModel,
                             scrollFunction: scrollFunction),
                       ],
                     );
@@ -86,11 +70,11 @@ class _ChatUIPageWidgetState extends State<ChatUIPageWidget> {
                 } else if (snapshot.connectionState ==
                         ConnectionState.waiting ||
                     snapshot.connectionState == ConnectionState.active) {
-                  return LoadingTextWidget(
-                      loadingText: "Loading Please Wait...");
+                  return const LoadingTextWidget(
+                      loadingText: 'Loading Please Wait...');
                 } else {
-                  return LoadingTextWidget(
-                      loadingText: "Loading Please Wait...");
+                  return const LoadingTextWidget(
+                      loadingText: 'Loading Please Wait...');
                 }
               },
             ),

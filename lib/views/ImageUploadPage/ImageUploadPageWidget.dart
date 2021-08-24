@@ -52,7 +52,7 @@ class _ImageUploadPageWidgetState extends State<ImageUploadPageWidget> {
 
   _cropImage(filePath, String category) async {
     File? croppedImage = await ImageCropper.cropImage(
-      sourcePath: filePath,
+      sourcePath: filePath as String,
     );
     if (croppedImage != null) {
       print(croppedImage.path.toString());
@@ -71,59 +71,55 @@ class _ImageUploadPageWidgetState extends State<ImageUploadPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var _predictionList =
-        Provider.of<ImageUploadViewModel>(context, listen: false)
-            .fetchPredictions(imagePath);
+    final _predictionList =
+    Provider.of<ImageUploadViewModel>(context, listen: false)
+        .fetchPredictions(imagePath);
     return ChangeNotifierProvider(
       create: (_) => ImageUploadViewModel(),
       child: Scaffold(
         appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(50),
           child: AppBar(
             backgroundColor: AppConfig().primaryColor,
             leading: IconButton(
               onPressed: () => Navigator.of(context).pop(),
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
             ),
-            title: Text('Predictions'),
+            title: const Text('Predictions'),
           ),
-          preferredSize: Size.fromHeight(50),
         ),
         body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
           child: SafeArea(
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  FutureBuilder(
-                    future: _predictionList,
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.data == null) {
-                          LoadingTextWidget(
-                              loadingText:
-                              "Something went wrong. Internet or server error");
-                        } else {
-                          return ImageUploadBodyWidget(
-                            context: context,
-                            model: snapshot.data,
-                            imagePath: imagePath,
-                          );
-                        }
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting ||
-                          snapshot.connectionState == ConnectionState.active) {
-                        return LoadingTextWidget(
-                            loadingText: "Loading Please Wait..");
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FutureBuilder(
+                  future: _predictionList,
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.data == null) {
+                        const LoadingTextWidget(
+                            loadingText:
+                            'Something went wrong. Internet or server error');
                       } else {
-                        return LoadingTextWidget(
-                            loadingText: "Loading Please Wait..");
+                        return ImageUploadBodyWidget(
+                          context: context,
+                          model: snapshot.data as Map<String,dynamic>,
+                          imagePath: imagePath,
+                        );
                       }
-                    },
-                  ),
-                ],
-              ),
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting ||
+                        snapshot.connectionState == ConnectionState.active) {
+                      return const LoadingTextWidget(
+                          loadingText: 'Loading Please Wait..');
+                    } else {
+                      return const LoadingTextWidget(
+                          loadingText: 'Loading Please Wait..');
+                    }
+                  },
+                ),
+              ],
             ),
           ),
         ),

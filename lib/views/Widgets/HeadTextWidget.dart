@@ -50,7 +50,7 @@ class HeadTextWidget extends StatelessWidget {
                         ));
                       }
                     })
-                : Container()
+                : SizedBox()
           ],
         ),
       ),

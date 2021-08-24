@@ -12,8 +12,8 @@ class ChatModelHiveAdaptor extends TypeAdapter<HiveMessages> {
 
   @override
   HiveMessages read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
+    final int numOfFields = reader.readByte();
+    final Map<int, dynamic> fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return HiveMessages(

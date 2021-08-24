@@ -6,16 +6,10 @@ import '../../models/ChatBot/HiveMessageModel.dart';
 class ChatHomeViewModel extends ChangeNotifier {
   late List<dynamic> sessions;
 
-  Future<List<dynamic>?> getAllSessions() async {
-    var box = await Hive.openBox<HiveMessages>('Messages');
-    print("code runned");
+  Future<List<dynamic>> getAllSessions() async {
+    final Box<HiveMessages> box = await Hive.openBox<HiveMessages>('Messages');
     sessions = box.keys.toList();
-    if (sessions.isEmpty) {
-      notifyListeners();
-      return null;
-    } else {
-      notifyListeners();
-      return sessions;
-    }
+    notifyListeners();
+    return sessions;
   }
 }
