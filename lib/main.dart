@@ -7,14 +7,14 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
 
 import 'config.dart';
-import 'models/ChatBot/HiveMessageModel.dart';
-import 'viewModels/ChatUI/ChatHomeViewModel.dart';
-import 'viewModels/HomePageViewModel.dart';
-import 'views/ChatPage/chatHomePageWidget.dart';
-import 'views/HomePage/homePageWidget.dart';
-import 'views/MyUploadsPage/myUploadsPageWidget.dart';
-import 'views/SettingsPage/settingsPageWidget.dart';
-import 'views/Widgets/PlatformScaffoldWidget.dart';
+import 'models/ChatBot/hive_message_model.dart';
+import 'viewModels/ChatUI/chat_home_view_model.dart';
+import 'viewModels/home_page_view_model.dart';
+import 'views/ChatPage/chat_home_page_widget.dart';
+import 'views/HomePage/home_page_head_widget.dart';
+import 'views/MyUploadsPage/my_uploads_page_widget.dart';
+import 'views/SettingsPage/settings_page_widget.dart';
+import 'views/Widgets/scaffold_widget.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'HiveMessageModel.dart';
+part of 'hive_message_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
