@@ -54,7 +54,7 @@ class ChatUIFormWidget extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide(
-                          color: AppConfig().secondaryColor, width: 1.0),
+                          color: AppConfig().secondaryColor),
                     ),
                   ),
                 ),

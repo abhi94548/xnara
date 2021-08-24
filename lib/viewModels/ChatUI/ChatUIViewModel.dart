@@ -2,9 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:xnara/models/ChatBot/HiveMessageModel.dart';
+
 import '../../models/ChatBot/MessageModel.dart';
-import '../../models/ChatBot/chat_Json_Model.dart';
 import '../../models/ChatBot/chat_Init_Model.dart';
+import '../../models/ChatBot/chat_Json_Model.dart';
 import '../../services/ChatService.dart';
 
 class ChatUIViewModel extends ChangeNotifier {
@@ -13,9 +14,9 @@ class ChatUIViewModel extends ChangeNotifier {
 
   Future<ChatInitModel?> initSession() async {
     try {
-      ChatInitModel _list = await WebServiceChatApi().faqInit();
+      final ChatInitModel _list = await WebServiceChatApi().faqInit();
       if (_list.success) {
-        this.chats = _list;
+        chats = _list;
         notifyListeners();
         return chats;
       } else {
@@ -28,28 +29,28 @@ class ChatUIViewModel extends ChangeNotifier {
   }
 
   addUserMessage(String message, String sessionId) async {
-    var box = await Hive.openBox<HiveMessages>('Messages');
-    ChatMessage chatMessage = ChatMessage(agent: "user", message: message);
+    final Box<HiveMessages> box = await Hive.openBox<HiveMessages>('Messages');
+    final ChatMessage chatMessage = ChatMessage(agent: 'user', message: message);
     messages.add(chatMessage);
-    HiveMessages hiveMessages = HiveMessages(message: messages.toString());
+    final HiveMessages hiveMessages = HiveMessages(message: messages.toString());
     box.put(sessionId, hiveMessages);
     notifyListeners();
   }
 
   sendMessage(String message, String sessionId) async {
-    var box = await Hive.openBox<HiveMessages>('Messages');
+    final Box<HiveMessages> box = await Hive.openBox<HiveMessages>('Messages');
     try {
-      List<ChatJsonModel> _list =
+      final List<ChatJsonModel> _list =
           await WebServiceChatApi().fetchMessageResponse(message, sessionId);
       for (int i = 0; i < _list.length; i++) {
-        ChatMessage chatMessage =
+        final ChatMessage chatMessage =
             ChatMessage(agent: _list[i].agent, message: _list[i].payload.text);
         messages.add(chatMessage);
       }
     } catch (e) {
       throw Exception('Something went wrong');
     }
-    HiveMessages hiveMessages = HiveMessages(message: messages.toString());
+    final HiveMessages hiveMessages = HiveMessages(message: messages.toString());
     box.put(sessionId, hiveMessages);
     notifyListeners();
   }

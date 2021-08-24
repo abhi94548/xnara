@@ -13,7 +13,7 @@ class SettingsPageWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            HeadTextWidget(headText: 'Settings',routeName : 'settings'),
+            const HeadTextWidget(headText: 'Settings',routeName : 'settings'),
             const SizedBox(
               height: 10,
             ),

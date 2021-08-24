@@ -2,19 +2,16 @@ import 'package:flutter/cupertino.dart';
 import '../services/homePageService.dart';
 
 class HomePageViewModel extends ChangeNotifier {
-  //late FoodModel foods;
-  late Map<String, dynamic> foods = {};
+  late Map<String, dynamic> foods = {} as Map<String,dynamic>;
 
-  Future<Map<String, dynamic>?> fetchFoods() async {
-    //FoodModel _list = await WebServiceFoodApi().fetchFoodList();
+  Future<Map<String, dynamic>> fetchFoods() async {
     try {
-      var _list = await WebServiceFoodApi().fetchFoodList();
-      print(_list.toString());
-      this.foods = _list!;
+      final Map<String, dynamic> _list = await WebServiceFoodApi().fetchFoodList();
+      foods = _list;
       notifyListeners();
       return foods;
     } catch (e) {
-      return null;
+      throw Exception('Something went wrong');
     }
   }
 }

@@ -9,15 +9,13 @@ class LoadingTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text(
-          loadingText,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 18,
-            color: AppConfig().iconColor,
-          ),
+    return Center(
+      child: Text(
+        loadingText,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 18,
+          color: AppConfig().iconColor,
         ),
       ),
     );

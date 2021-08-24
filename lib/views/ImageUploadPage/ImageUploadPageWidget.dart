@@ -5,10 +5,10 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import '../../views/Widgets/LoadingTextWidget.dart';
 
 import '../../config.dart';
 import '../../viewModels/ImageUploadViewModel.dart';
+import '../../views/Widgets/LoadingTextWidget.dart';
 import '../ImageUploadPage/ImageUploadBodyWidget.dart';
 
 class ImageUploadPageWidget extends StatefulWidget {
@@ -19,23 +19,22 @@ class ImageUploadPageWidget extends StatefulWidget {
 }
 
 class _ImageUploadPageWidgetState extends State<ImageUploadPageWidget> {
-  final picker = ImagePicker();
-  late String imagePath = "";
+  final ImagePicker picker = ImagePicker();
+  late String imagePath = '';
 
   bool permissionStatus = false;
 
   _requestPermission() async {
-    var cameraPermission = await Permission.camera.status;
-    var storagePermission = await Permission.storage.status;
+    final PermissionStatus cameraPermission = await Permission.camera.status;
+    final PermissionStatus storagePermission = await Permission.storage.status;
     if (cameraPermission.isGranted && storagePermission.isGranted) {
       permissionStatus = true;
       setState(() {});
     }
-    print("permission granted" + permissionStatus.toString());
   }
 
-  Future getImage() async {
-    final pickedFile = await picker.pickImage(
+  getImage() async {
+    final XFile? pickedFile = await picker.pickImage(
         source: ImageSource.camera,
         maxWidth: 500.0,
         maxHeight: 500.0,
@@ -44,18 +43,15 @@ class _ImageUploadPageWidgetState extends State<ImageUploadPageWidget> {
     setState(() {
       if (pickedFile != null) {
         _cropImage(pickedFile.path, '');
-      } else {
-        print('No image selected.');
       }
     });
   }
 
-  _cropImage(filePath, String category) async {
-    File? croppedImage = await ImageCropper.cropImage(
-      sourcePath: filePath as String,
+  _cropImage(String filePath, String category) async {
+    final File? croppedImage = await ImageCropper.cropImage(
+      sourcePath: filePath,
     );
     if (croppedImage != null) {
-      print(croppedImage.path.toString());
       setState(() {
         imagePath = croppedImage.path.toString();
       });

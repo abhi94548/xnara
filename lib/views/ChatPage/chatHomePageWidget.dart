@@ -17,8 +17,8 @@ class ChatHomePageWidget extends StatelessWidget {
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HeadTextWidget(headText: 'Chat Faq',routeName : 'chatPage'),
+          children: <Widget>[
+            const HeadTextWidget(headText: 'Chat Faq',routeName : 'chatPage'),
             Flexible(
               child: FutureBuilder<List<dynamic>>(
                 future: sessionList,

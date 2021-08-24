@@ -24,7 +24,6 @@ class ImageUploadBodyWidget extends StatelessWidget {
           msg: message,
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
           backgroundColor: AppConfig().primaryColor,
           textColor: Colors.white,
           fontSize: 16.0);
@@ -55,7 +54,6 @@ class ImageUploadBodyWidget extends StatelessWidget {
                         });
                       },
                       onSelected: (String selection) {
-                        print('Selected value is $selection');
                         context
                             .read<ImageUploadViewModel>()
                             .setCategory(selection);
@@ -130,8 +128,7 @@ class ImageUploadBodyWidget extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: DropdownButton<String>(
                 hint: const Text('Select existing Category'),
-                onChanged: (newValue) {
-                  print(newValue);
+                onChanged: (String? newValue) {
                   context.read<ImageUploadViewModel>().setCategory(newValue!);
                 },
                 items: _foodList.map<DropdownMenuItem<String>>((String e) {
@@ -142,7 +139,7 @@ class ImageUploadBodyWidget extends StatelessWidget {
                 }).toList(),
                 value:
                     context.read<ImageUploadViewModel>().category.toString() ==
-                            ""
+                            ''
                         ? _foodList[0]
                         : context.read<ImageUploadViewModel>().category,
               ),

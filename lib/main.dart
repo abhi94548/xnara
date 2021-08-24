@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart' as pathProvider;
+import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
 
 import 'config.dart';
@@ -18,7 +18,7 @@ import 'views/Widgets/PlatformScaffoldWidget.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Directory directory = await pathProvider.getApplicationDocumentsDirectory();
+  final Directory directory = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(directory.path);
   Hive.registerAdapter(ChatModelHiveAdaptor());
   runApp(MyApp());
@@ -35,10 +35,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: MultiProvider(
           providers: [
-            ChangeNotifierProvider(create: (_) => HomePageViewModel()),
-            ChangeNotifierProvider(create: (_) => ChatHomeViewModel()),
+            ChangeNotifierProvider<HomePageViewModel>(create: (_) => HomePageViewModel()),
+            ChangeNotifierProvider<ChatHomeViewModel>(create: (_) => ChatHomeViewModel()),
           ],
-          child: NavigationTab(),
+          child: const NavigationTab(),
         ));
   }
 }
@@ -52,11 +52,11 @@ class NavigationTab extends StatefulWidget {
 
 class _NavigationTabState extends State<NavigationTab> {
   int _currentIndex = 0;
-  final List<Widget> _children = [
-    HomePageWidget(),
-    MyUploadsPageWidget(),
-    ChatHomePageWidget(),
-    SettingsPageWidget(),
+  final List<Widget> _children = <Widget>[
+    const HomePageWidget(),
+    const MyUploadsPageWidget(),
+    const ChatHomePageWidget(),
+    const SettingsPageWidget(),
   ];
 
   void onTabTapped(int index) {
@@ -80,45 +80,45 @@ class _NavigationTabState extends State<NavigationTab> {
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: const Icon(Icons.home),
               label: AppConfig().home,
               backgroundColor: AppConfig().primaryColor),
           BottomNavigationBarItem(
-              icon: Icon(Icons.cloud_upload),
+              icon: const Icon(Icons.cloud_upload),
               label: AppConfig().myUploads,
               backgroundColor: AppConfig().primaryColor),
           BottomNavigationBarItem(
-              icon: Icon(Icons.support_agent),
+              icon: const Icon(Icons.support_agent),
               label: AppConfig().faq,
               backgroundColor: AppConfig().primaryColor),
           BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
+              icon: const Icon(Icons.settings),
               label: AppConfig().setting,
               backgroundColor: AppConfig().primaryColor)
         ],
       ),
       tabBar: CupertinoTabBar(items: [
         BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.home), label: AppConfig().home),
+            icon: const Icon(CupertinoIcons.home), label: AppConfig().home),
         BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.cloud_upload),
+            icon: const Icon(CupertinoIcons.cloud_upload),
             label: AppConfig().myUploads),
         BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.question_circle), label: AppConfig().faq),
+            icon: const Icon(CupertinoIcons.question_circle), label: AppConfig().faq),
         BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.settings), label: AppConfig().setting)
+            icon: const Icon(CupertinoIcons.settings), label: AppConfig().setting)
       ]),
       backgroundColor: AppConfig().primaryColor,
       tabBuilder: (context, index) {
         switch (index) {
           case 0:
-            return HomePageWidget();
+            return const HomePageWidget();
           case 1:
-            return MyUploadsPageWidget();
+            return const MyUploadsPageWidget();
           case 2:
-            return ChatHomePageWidget();
+            return const ChatHomePageWidget();
           default:
-            return SettingsPageWidget();
+            return const SettingsPageWidget();
         }
       },
     );

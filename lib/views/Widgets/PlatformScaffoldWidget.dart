@@ -4,33 +4,32 @@ import 'PlatformWidget.dart';
 
 class PlatformScaffoldWidget
     extends PlatformWidget<CupertinoTabScaffold, Scaffold> {
+  const PlatformScaffoldWidget({
+    required this.tabBuilder,
+    required this.tabBar,
+    this.appBar,
+    this.body,
+    this.bottomNavigationBar,
+    this.backgroundColor,
+  });
 
-  PlatformScaffoldWidget(
-      {this.appBar ,
-      this.body,
-      this.bottomNavigationBar,
-      required this.tabBar,
-      this.backgroundColor,
-      required this.tabBuilder});
-
-  final PreferredSizeWidget?  appBar;
-  final Widget?  body;
+  final PreferredSizeWidget? appBar;
+  final Widget? body;
   final Widget? bottomNavigationBar;
   final CupertinoTabBar tabBar;
   final IndexedWidgetBuilder tabBuilder;
   final Color? backgroundColor;
 
-
   @override
   CupertinoTabScaffold createIosWidget(BuildContext context) =>
-      new CupertinoTabScaffold(
+      CupertinoTabScaffold(
         tabBar: tabBar,
         tabBuilder: tabBuilder,
         backgroundColor: backgroundColor,
       );
 
   @override
-  Scaffold createAndroidWidget(BuildContext context) => new Scaffold(
+  Scaffold createAndroidWidget(BuildContext context) => Scaffold(
         appBar: appBar,
         body: body,
         backgroundColor: backgroundColor,

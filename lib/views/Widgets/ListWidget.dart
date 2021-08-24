@@ -8,13 +8,11 @@ class ListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Card(
-        elevation: 2.0,
-        child: ListTile(
-          title: Text(foodName),
-          subtitle: Text(images),
-        ),
+    return Card(
+      elevation: 2.0,
+      child: ListTile(
+        title: Text(foodName),
+        subtitle: Text(images),
       ),
     );
   }

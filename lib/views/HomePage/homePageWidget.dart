@@ -18,7 +18,7 @@ class HomePageWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            HeadTextWidget(headText: 'Foods List',routeName : 'homePage'),
+            const HeadTextWidget(headText: 'Foods List',routeName : 'homePage'),
             Flexible(
               child: FutureBuilder(
                 future: foodList,

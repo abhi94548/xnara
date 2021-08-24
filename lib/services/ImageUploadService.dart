@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/rendering.dart';
 import '../config.dart';
 
 class WebServiceImageUpload {

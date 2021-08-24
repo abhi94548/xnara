@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'dart:io' show Platform;
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 abstract class PlatformWidget<I extends Widget, A extends Widget>
     extends StatelessWidget {
-  PlatformWidget ({Key? key}) : super (key : key);
+  const PlatformWidget ({Key? key}) : super (key : key);
 
 
   I createIosWidget(BuildContext context);
