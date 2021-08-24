@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:xnara/models/ChatBot/chatInitModel.dart';
 import '../../../../viewModels/ChatUI/ChatUIViewModel.dart';
 import '../../../../config.dart';
 
@@ -10,7 +11,7 @@ class ChatUIFormWidget extends StatefulWidget {
       required this.scrollFunction});
 
   final BuildContext context;
-  final ChatUIViewModel model;
+  final ChatInitModel model;
   final Function scrollFunction;
 
   @override
@@ -73,10 +74,10 @@ class _ChatUIFormWidgetState extends State<ChatUIFormWidget> {
                   if (myController.text.isNotEmpty) {
                     widget.context.read<ChatUIViewModel>().addUserMessage(
                         myController.text,
-                        widget.model.chats!.sessionId.toString());
+                        widget.model.sessionId.toString());
                     widget.context.read<ChatUIViewModel>().sendMessage(
                         myController.text,
-                        widget.model.chats!.sessionId.toString());
+                        widget.model.sessionId.toString());
                     myController.clear();
                     widget.scrollFunction();
                   }

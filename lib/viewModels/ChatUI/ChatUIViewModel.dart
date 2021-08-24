@@ -10,26 +10,27 @@ import '../../services/ChatService.dart';
 
 class ChatUIViewModel extends ChangeNotifier {
   late ChatInitModel? chats;
-  bool error = false;
   late List<ChatMessage> messages = [];
 
   Future<ChatInitModel?> initSession() async {
     try {
       ChatInitModel _list = await WebServiceChatApi().faqInit();
-      this.chats = _list;
+      if (_list.success) {
+        this.chats = _list;
+        notifyListeners();
+        return chats;
+      } else {
+        notifyListeners();
+        return null;
+      }
     } catch (e) {
-      error = true;
+      throw Exception('Something went wrong');
     }
-    notifyListeners();
-    return chats;
   }
 
   addUserMessage(String message, String sessionId) async {
     var box = await Hive.openBox<HiveMessages>('Messages');
-    ChatMessage chatMessage = ChatMessage(
-        agent: "user",
-        message: message
-    );
+    ChatMessage chatMessage = ChatMessage(agent: "user", message: message);
     messages.add(chatMessage);
     HiveMessages hiveMessages = HiveMessages(message: messages.toString());
     box.put(sessionId, hiveMessages);
@@ -42,13 +43,12 @@ class ChatUIViewModel extends ChangeNotifier {
       List<ChatJsonModel> _list =
           await WebServiceChatApi().fetchMessageResponse(message, sessionId);
       for (int i = 0; i < _list.length; i++) {
-        ChatMessage chatMessage = ChatMessage(
-            agent: _list[i].agent,
-            message: _list[i].payload.text);
+        ChatMessage chatMessage =
+            ChatMessage(agent: _list[i].agent, message: _list[i].payload.text);
         messages.add(chatMessage);
       }
     } catch (e) {
-      error = true;
+      throw Exception('Something went wrong');
     }
     HiveMessages hiveMessages = HiveMessages(message: messages.toString());
     box.put(sessionId, hiveMessages);

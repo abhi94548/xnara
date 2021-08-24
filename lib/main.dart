@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
 import 'package:provider/provider.dart';
+import 'package:xnara/viewModels/ChatUI/ChatUIViewModel.dart';
 
 import 'config.dart';
 import 'models/ChatBot/HiveMessageModel.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
           providers: [
             ChangeNotifierProvider(create: (_) => HomePageViewModel()),
             ChangeNotifierProvider(create: (_) => ChatHomeViewModel()),
+            ChangeNotifierProvider(create: (_) => ChatUIViewModel())
           ],
           child: NavigationTab(),
         ));

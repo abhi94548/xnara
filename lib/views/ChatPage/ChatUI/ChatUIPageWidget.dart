@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:xnara/views/ChatPage/ChatUI/Widget/ChatUIAppBarWidget.dart';
+import 'package:xnara/views/Widgets/LoadingTextWidget.dart';
 import '../../../views/ChatPage/ChatUI/ChatUIBodyWidget.dart';
 import '../../../views/ChatPage/ChatUI/Widget/ChatUITextWidget.dart';
 import '../../../config.dart';
-import '../ChatUI/Widget/ChatUIInputWidget.dart';
+import '../ChatUI/Widget/ChatUIFormWidget.dart';
 import '../../../viewModels/ChatUI/ChatUIViewModel.dart';
 
 class ChatUIPageWidget extends StatefulWidget {
@@ -38,74 +40,54 @@ class _ChatUIPageWidgetState extends State<ChatUIPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ChatUIViewModel(),
-      child: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Scaffold(
-          appBar: PreferredSize(
-            child: AppBar(
-              backgroundColor: AppConfig().primaryColor,
-              leading: IconButton(
-                onPressed: () => Navigator.of(context).pop(),
-                icon: Icon(Icons.arrow_back),
-              ),
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircleAvatar(
-                        radius: 20,
-                        backgroundImage: NetworkImage(
-                            'https://via.placeholder.com/140x100')),
-                  ),
-                  Text(
-                    AppConfig().chatUIHeading,
-                  ),
-                ],
-              ),
-            ),
-            preferredSize: Size.fromHeight(50),
-          ),
-          body: SafeArea(
-            child: Container(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Flexible(
-                    child: Consumer<ChatUIViewModel>(
-                      builder: (context, model, _) {
-                        context.read<ChatUIViewModel>().initSession();
-                        return Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              model.messages.isEmpty
-                                  ? ChatUITextWidget(
-                                      displayText:
-                                          "No Messages yet. Start asking..")
-                                  : ChatUIBodyWidget(
-                                      model.messages, _scrollController,scrollFunction),
-                              context.read<ChatUIViewModel>().error
-                                  ? ChatUITextWidget(
-                                      displayText:
-                                          'Something went wrong. Please try again later..')
-                                  : ChatUIFormWidget(
-                                      context: context,
-                                      model: model,
-                                      scrollFunction: scrollFunction),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
+    var sessionId = Provider.of<ChatUIViewModel>(context,listen: false).initSession();
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        appBar: PreferredSize(
+          child: ChatUIAppBarWidget(),
+          preferredSize: Size.fromHeight(50),
+        ),
+        body: SafeArea(
+          child: Container(
+            child: Flexible(
+              child: FutureBuilder(
+                future: sessionId,
+                builder: (BuildContext context, AsyncSnapshot snapshot){
+                  if(snapshot.connectionState == ConnectionState.done){
+                    if(snapshot.data == null){
+                      return LoadingTextWidget(loadingText: "Something went wrong. Please try again later..");
+                    }
+                    else{
+                       return Consumer<ChatUIViewModel>(
+                           builder: (context,model,_){
+                             return Column(
+                               mainAxisAlignment: MainAxisAlignment.start,
+                               crossAxisAlignment: CrossAxisAlignment.start,
+                               children: [
+                                 model.messages.isEmpty
+                                     ? ChatUITextWidget(
+                                     displayText:
+                                     "No Messages yet. Start asking..")
+                                     : ChatUIBodyWidget(
+                                     model.messages, _scrollController,scrollFunction),
+                                 ChatUIFormWidget(
+                                     context: context,
+                                     model: snapshot.data,
+                                     scrollFunction: scrollFunction),
+                               ],
+                             );
+                           },
+                       );
+                    }
+                  }
+                  else if(snapshot.connectionState == ConnectionState.waiting || snapshot.connectionState == ConnectionState.active){
+                    return LoadingTextWidget(loadingText: "Loading Please Wait...");
+                  }
+                  else{
+                    return LoadingTextWidget(loadingText: "Loading Please Wait...");
+                  }
+                },
               ),
             ),
           ),

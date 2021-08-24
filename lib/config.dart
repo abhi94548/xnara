@@ -18,4 +18,5 @@ class AppConfig {
   String faqInit = "http://164.52.211.147/bot/init";
   String faqChat = "http://164.52.211.147/bot/chat";
   String chatUIHeading = "Ask me Anything";
+  String chatUIAgentImage = "https://via.placeholder.com/140x100";
 }
