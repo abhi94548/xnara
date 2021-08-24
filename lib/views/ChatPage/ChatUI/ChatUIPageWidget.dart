@@ -32,15 +32,18 @@ class _ChatUIPageWidgetState extends State<ChatUIPageWidget> {
   }
 
   scrollFunction() {
-    Timer(
-        Duration(milliseconds: 300),
-        () => _scrollController
-            .jumpTo(_scrollController.position.maxScrollExtent));
+    if (_scrollController.hasClients) {
+      Timer(
+          Duration(milliseconds: 300),
+          () => _scrollController
+              .jumpTo(_scrollController.position.maxScrollExtent));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var sessionId = Provider.of<ChatUIViewModel>(context,listen: false).initSession();
+    var sessionId =
+        Provider.of<ChatUIViewModel>(context, listen: false).initSession();
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -50,45 +53,46 @@ class _ChatUIPageWidgetState extends State<ChatUIPageWidget> {
         ),
         body: SafeArea(
           child: Container(
-            child: Flexible(
-              child: FutureBuilder(
-                future: sessionId,
-                builder: (BuildContext context, AsyncSnapshot snapshot){
-                  if(snapshot.connectionState == ConnectionState.done){
-                    if(snapshot.data == null){
-                      return LoadingTextWidget(loadingText: "Something went wrong. Please try again later..");
-                    }
-                    else{
-                       return Consumer<ChatUIViewModel>(
-                           builder: (context,model,_){
-                             return Column(
-                               mainAxisAlignment: MainAxisAlignment.start,
-                               crossAxisAlignment: CrossAxisAlignment.start,
-                               children: [
-                                 model.messages.isEmpty
-                                     ? ChatUITextWidget(
-                                     displayText:
-                                     "No Messages yet. Start asking..")
-                                     : ChatUIBodyWidget(
-                                     model.messages, _scrollController,scrollFunction),
-                                 ChatUIFormWidget(
-                                     context: context,
-                                     model: snapshot.data,
-                                     scrollFunction: scrollFunction),
-                               ],
-                             );
-                           },
-                       );
-                    }
+            child: FutureBuilder(
+              future: sessionId,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.data == null) {
+                    return LoadingTextWidget(
+                        loadingText:
+                            "Something went wrong. Please try again later..");
+                  } else {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Consumer<ChatUIViewModel>(
+                          builder: (context, model, _) {
+                            return model.messages.isEmpty
+                                ? ChatUITextWidget(
+                                    displayText:
+                                        "No Messages yet. Start asking..")
+                                : ChatUIBodyWidget(model.messages,
+                                    _scrollController, scrollFunction);
+                          },
+                        ),
+                        ChatUIFormWidget(
+                            context: context,
+                            model: snapshot.data,
+                            scrollFunction: scrollFunction),
+                      ],
+                    );
                   }
-                  else if(snapshot.connectionState == ConnectionState.waiting || snapshot.connectionState == ConnectionState.active){
-                    return LoadingTextWidget(loadingText: "Loading Please Wait...");
-                  }
-                  else{
-                    return LoadingTextWidget(loadingText: "Loading Please Wait...");
-                  }
-                },
-              ),
+                } else if (snapshot.connectionState ==
+                        ConnectionState.waiting ||
+                    snapshot.connectionState == ConnectionState.active) {
+                  return LoadingTextWidget(
+                      loadingText: "Loading Please Wait...");
+                } else {
+                  return LoadingTextWidget(
+                      loadingText: "Loading Please Wait...");
+                }
+              },
             ),
           ),
         ),

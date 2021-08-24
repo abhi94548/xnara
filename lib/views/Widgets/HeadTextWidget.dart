@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:xnara/viewModels/ChatUI/ChatUIViewModel.dart';
 import 'package:xnara/viewModels/ImageUploadViewModel.dart';
 import '../../views/ImageUploadPage/ImageUploadPageWidget.dart';
 import '../../config.dart';
@@ -35,7 +36,11 @@ class HeadTextWidget extends StatelessWidget {
                     onPressed: () {
                       if (routeName == "chatPage") {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ChatUIPageWidget()));
+                          builder: (context) => MultiProvider(providers: [
+                            ChangeNotifierProvider(
+                                create: (_) => ChatUIViewModel())
+                          ], child: ChatUIPageWidget()),
+                        ));
                       } else {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => MultiProvider(providers: [

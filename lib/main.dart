@@ -38,7 +38,6 @@ class MyApp extends StatelessWidget {
           providers: [
             ChangeNotifierProvider(create: (_) => HomePageViewModel()),
             ChangeNotifierProvider(create: (_) => ChatHomeViewModel()),
-            ChangeNotifierProvider(create: (_) => ChatUIViewModel())
           ],
           child: NavigationTab(),
         ));
