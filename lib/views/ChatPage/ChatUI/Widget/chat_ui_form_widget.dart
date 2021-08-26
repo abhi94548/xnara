@@ -25,7 +25,7 @@ class ChatUIFormWidget extends StatelessWidget {
         key: _messageBoxKey,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+          children: <Widget>[
             const SizedBox(
               width: 10,
             ),
@@ -42,8 +42,7 @@ class ChatUIFormWidget extends StatelessWidget {
                     hintText: 'Enter here',
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(
-                          color: AppConfig().secondaryColor, width: 1.0),
+                      borderSide: BorderSide(color: AppConfig().secondaryColor),
                     ),
                     contentPadding: const EdgeInsets.all(12),
                     border: OutlineInputBorder(

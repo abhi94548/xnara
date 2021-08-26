@@ -28,13 +28,13 @@ class ChatUIBodyWidget extends StatelessWidget {
                 mainAxisAlignment: messages[index].agent == 'bot'
                     ? MainAxisAlignment.start
                     : MainAxisAlignment.end,
-                children: [
+                children: <Widget>[
                   Container(
                     constraints: BoxConstraints(
                       maxWidth: MediaQuery.of(context).size.width * 0.7,
                     ),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15.0, vertical: 15.0),
                     decoration: BoxDecoration(
                       color: messages[index].agent.toString() == 'bot'
                           ? AppConfig().botColor

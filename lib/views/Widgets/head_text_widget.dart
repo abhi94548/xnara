@@ -20,7 +20,7 @@ class HeadTextWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Text(
             headText,
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 35),

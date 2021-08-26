@@ -1,10 +1,13 @@
 import 'dart:convert';
 
+List<ChatJsonModel> chatJsonModelFromJson(String str) =>
+    List<ChatJsonModel>.from(json
+            .decode(str)
+            .map((x) => ChatJsonModel.fromJson(x as Map<String, dynamic>))
+        as Iterable<dynamic>);
 
-List<ChatJsonModel> chatJsonModelFromJson(String str) => List<ChatJsonModel>.from(json.decode(str).map((x) => ChatJsonModel.fromJson(x as Map<String,dynamic>)) as Iterable<dynamic>);
-
-String chatJsonModelToJson(List<ChatJsonModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
+String chatJsonModelToJson(List<ChatJsonModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ChatJsonModel {
   ChatJsonModel({
@@ -13,19 +16,17 @@ class ChatJsonModel {
   });
 
   factory ChatJsonModel.fromJson(Map<String, dynamic> json) => ChatJsonModel(
-    agent: json['agent'] as String,
-    payload: Payload.fromJson(json['payload'] as Map<String,dynamic>),
-  );
+        agent: json['agent'] as String,
+        payload: Payload.fromJson(json['payload'] as Map<String, dynamic>),
+      );
 
   String agent;
   Payload payload;
 
-
-
-  Map<String, dynamic> toJson() => {
-    'agent': agent,
-    'payload': payload.toJson(),
-  };
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'agent': agent,
+        'payload': payload.toJson(),
+      };
 }
 
 class Payload {
@@ -34,12 +35,12 @@ class Payload {
   });
 
   factory Payload.fromJson(Map<String, dynamic> json) => Payload(
-    text: json['text'] as String,
-  );
+        text: json['text'] as String,
+      );
 
   String text;
 
-  Map<String, dynamic> toJson() => {
-    'text': text,
-  };
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'text': text,
+      };
 }

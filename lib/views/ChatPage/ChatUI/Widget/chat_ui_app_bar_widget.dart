@@ -14,7 +14,7 @@ class ChatUIAppBarWidget extends StatelessWidget {
         icon: const Icon(Icons.arrow_back),
       ),
       title: Row(
-        children: [
+        children: <Widget>[
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: CircleAvatar(

@@ -11,9 +11,12 @@ class MyUploadsPageWidget extends StatelessWidget {
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const HeadTextWidget(headText: 'My Uploads',routeName : 'myUploadPage'),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.4,),
+          children: <Widget>[
+            const HeadTextWidget(
+                headText: 'My Uploads', routeName: 'myUploadPage'),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.4,
+            ),
             const LoadingTextWidget(loadingText: 'No Uploads yet')
           ],
         ),

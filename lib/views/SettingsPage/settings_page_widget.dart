@@ -12,8 +12,8 @@ class SettingsPageWidget extends StatelessWidget {
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const HeadTextWidget(headText: 'Settings',routeName : 'settings'),
+          children: <Widget>[
+            const HeadTextWidget(headText: 'Settings', routeName: 'settings'),
             const SizedBox(
               height: 10,
             ),

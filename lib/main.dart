@@ -18,7 +18,8 @@ import 'views/Widgets/scaffold_widget.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final Directory directory = await path_provider.getApplicationDocumentsDirectory();
+  final Directory directory =
+      await path_provider.getApplicationDocumentsDirectory();
   Hive.init(directory.path);
   Hive.registerAdapter(ChatModelHiveAdaptor());
   runApp(MyApp());
@@ -35,8 +36,12 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: MultiProvider(
           providers: [
-            ChangeNotifierProvider<HomePageViewModel>(create: (_) => HomePageViewModel(),child: const HomePageWidget(),),
-            ChangeNotifierProvider<ChatHomeViewModel>(create: (_) => ChatHomeViewModel()),
+            ChangeNotifierProvider<HomePageViewModel>(
+              create: (_) => HomePageViewModel(),
+              child: const HomePageWidget(),
+            ),
+            ChangeNotifierProvider<ChatHomeViewModel>(
+                create: (_) => ChatHomeViewModel()),
           ],
           child: const NavigationTab(),
         ));
@@ -78,7 +83,7 @@ class _NavigationTabState extends State<NavigationTab> {
         selectedItemColor: AppConfig().primaryColor,
         unselectedFontSize: 14,
         type: BottomNavigationBarType.fixed,
-        items: [
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               icon: const Icon(Icons.home),
               label: AppConfig().home,
@@ -97,19 +102,21 @@ class _NavigationTabState extends State<NavigationTab> {
               backgroundColor: AppConfig().primaryColor)
         ],
       ),
-      tabBar: CupertinoTabBar(items: [
+      tabBar: CupertinoTabBar(items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
             icon: const Icon(CupertinoIcons.home), label: AppConfig().home),
         BottomNavigationBarItem(
             icon: const Icon(CupertinoIcons.cloud_upload),
             label: AppConfig().myUploads),
         BottomNavigationBarItem(
-            icon: const Icon(CupertinoIcons.question_circle), label: AppConfig().faq),
+            icon: const Icon(CupertinoIcons.question_circle),
+            label: AppConfig().faq),
         BottomNavigationBarItem(
-            icon: const Icon(CupertinoIcons.settings), label: AppConfig().setting)
+            icon: const Icon(CupertinoIcons.settings),
+            label: AppConfig().setting)
       ]),
       backgroundColor: AppConfig().primaryColor,
-      tabBuilder: (context, index) {
+      tabBuilder: (BuildContext context, int index) {
         switch (index) {
           case 0:
             return const HomePageWidget();

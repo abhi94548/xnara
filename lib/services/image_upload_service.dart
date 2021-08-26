@@ -4,8 +4,6 @@ import 'package:dio/dio.dart';
 import '../config.dart';
 
 class WebServiceImageUpload {
-
-
   Dio dio = Dio();
   static const String _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
@@ -14,10 +12,8 @@ class WebServiceImageUpload {
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
-
-
   Future<Map<String, dynamic>> imageUpload(String imagePath) async {
-    final FormData formData = FormData.fromMap({
+    final FormData formData = FormData.fromMap(<String, dynamic>{
       'image': await MultipartFile.fromFile(imagePath,
           filename: getRandomString(15)),
     });
@@ -31,16 +27,14 @@ class WebServiceImageUpload {
     );
 
     if (response.statusCode == 200) {
-      return response.data as Map<String,dynamic>;
+      return response.data as Map<String, dynamic>;
     } else {
       throw Exception('Unable to Connect');
     }
   }
 
-
   Future<bool> categoryImage(String imagePath, String category) async {
-
-    final FormData formData = FormData.fromMap({
+    final FormData formData = FormData.fromMap(<String, dynamic>{
       'category': category,
       'image': await MultipartFile.fromFile(imagePath,
           filename: getRandomString(15)),
@@ -60,6 +54,4 @@ class WebServiceImageUpload {
       return false;
     }
   }
-
-
 }

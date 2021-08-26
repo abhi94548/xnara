@@ -12,12 +12,12 @@ class HomePageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<HomePageViewModel>(context,listen: false).fetchFoods();
+    Provider.of<HomePageViewModel>(context, listen: false).fetchFoods();
     return Scaffold(
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             const HeadTextWidget(headText: 'Foods List', routeName: 'homePage'),
             Flexible(
               child: Consumer<HomePageViewModel>(
