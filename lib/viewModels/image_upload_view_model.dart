@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
-import '../services/image_upload_service.dart';
 import '../services/home_service.dart';
+import '../services/image_upload_service.dart';
 
 class ImageUploadViewModel extends ChangeNotifier {
-  //late FoodModel foods;
   late Map<String, dynamic> responseList = {};
   late bool successUpload = false;
   String category = '';

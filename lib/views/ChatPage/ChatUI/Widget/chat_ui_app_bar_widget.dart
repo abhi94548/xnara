@@ -15,12 +15,12 @@ class ChatUIAppBarWidget extends StatelessWidget {
       ),
       title: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: CircleAvatar(
-                radius: 20,
-                backgroundImage: NetworkImage(
-                    AppConfig().chatUIAgentImage)),
+              radius: 20,
+              child: Icon(Icons.person),
+            ),
           ),
           Text(
             AppConfig().chatUIHeading,

@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:xnara/models/ChatBot/chat_init_model.dart';
 
 import '../../../../config.dart';
 import '../../../../viewModels/ChatUI/chat_ui_view_model.dart';
 
 class ChatUIFormWidget extends StatelessWidget {
-  ChatUIFormWidget(
-      {required this.context,
-      required this.model,
-      required this.scrollFunction});
+  ChatUIFormWidget({required this.context, required this.scrollFunction});
 
   final BuildContext context;
-  final ChatInitModel model;
   final Function scrollFunction;
 
   final GlobalKey<FormState> _messageBoxKey = GlobalKey<FormState>();
@@ -53,8 +48,7 @@ class ChatUIFormWidget extends StatelessWidget {
                     contentPadding: const EdgeInsets.all(12),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(
-                          color: AppConfig().secondaryColor),
+                      borderSide: BorderSide(color: AppConfig().secondaryColor),
                     ),
                   ),
                 ),
@@ -65,11 +59,15 @@ class ChatUIFormWidget extends StatelessWidget {
               child: FloatingActionButton(
                 mini: true,
                 onPressed: () {
-                  if (myController.text.isNotEmpty) {
-                    context.read<ChatUIViewModel>().addUserMessage(
-                        myController.text, model.sessionId.toString());
-                    context.read<ChatUIViewModel>().sendMessage(
-                        myController.text, model.sessionId.toString());
+                  if (myController.text.isNotEmpty &&
+                      context.read<ChatUIViewModel>().state !=
+                          ChatNotifierState.error) {
+                    context
+                        .read<ChatUIViewModel>()
+                        .addUserMessage(myController.text);
+                    context
+                        .read<ChatUIViewModel>()
+                        .sendMessage(myController.text);
                     myController.clear();
                     scrollFunction();
                   }

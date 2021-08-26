@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: MultiProvider(
           providers: [
-            ChangeNotifierProvider<HomePageViewModel>(create: (_) => HomePageViewModel()),
+            ChangeNotifierProvider<HomePageViewModel>(create: (_) => HomePageViewModel(),child: const HomePageWidget(),),
             ChangeNotifierProvider<ChatHomeViewModel>(create: (_) => ChatHomeViewModel()),
           ],
           child: const NavigationTab(),

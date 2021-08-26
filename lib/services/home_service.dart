@@ -1,26 +1,26 @@
 import 'package:dio/dio.dart';
+
 import '../config.dart';
+import '../helper/error_handler.dart';
+import '../helper/http_service.dart';
 
 class WebServiceFoodApi {
-  Dio dio = Dio();
+  final HttpService httpService = HttpService();
 
   Future<Map<String, dynamic>> fetchFoodList() async {
     try {
-      final Response<dynamic> response = await dio.get(
-        AppConfig().foodApiList,
-        options: Options(
-          responseType: ResponseType.json,
-        ),
-      );
-      if (response.statusCode == 200) {
-        final dynamic reply = response.data;
-        final Map<String, dynamic> _lists = reply as Map<String, dynamic>;
-        return _lists;
+      final Response<dynamic> response =
+          await httpService.requestSource(AppConfig().foodApiList, 'GET');
+      return response.data as Map<String, dynamic>;
+    } on DioError catch (error) {
+      if (error.type == DioErrorType.receiveTimeout ||
+          error.type == DioErrorType.connectTimeout) {
+        throw ShowError('Server timeout ');
+      } else if (error.type == DioErrorType.other) {
+        throw ShowError('No Internet connection...');
       } else {
-        throw Exception('Something went wrong');
+        throw ShowError('Something went wrong');
       }
-    } catch (e) {
-      throw Exception('Something went wrong');
     }
   }
 }

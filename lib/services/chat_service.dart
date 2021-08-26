@@ -3,54 +3,53 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 
 import '../config.dart';
+import '../helper/error_handler.dart';
+import '../helper/http_service.dart';
 import '../models/ChatBot/chat_init_model.dart';
 import '../models/ChatBot/chat_json_model.dart';
 
 class WebServiceChatApi {
-  Dio dio = Dio();
+  final HttpService httpService = HttpService();
 
   Future<ChatInitModel> faqInit() async {
-    final response = await dio.post(AppConfig().faqInit);
     try {
-      if (response.statusCode == 200) {
-        final ChatInitModel _lists =
-            chatInitModelFromJson(jsonEncode(response.data));
-        return _lists;
+      final Response<dynamic> response =
+          await httpService.requestSource(AppConfig().faqInit, 'POST');
+      return chatInitModelFromJson(jsonEncode(response.data));
+    } on DioError catch (error) {
+      if (error.type == DioErrorType.receiveTimeout ||
+          error.type == DioErrorType.connectTimeout) {
+        throw ShowError('Server timeout ');
+      } else if (error.type == DioErrorType.other) {
+        throw ShowError('No Internet connection...');
       } else {
-        throw Exception('Unable to Connect');
+        throw ShowError('Something went wrong');
       }
-    } catch (e) {
-      throw Exception('Something went wrong');
     }
   }
 
   Future<List<ChatJsonModel>> fetchMessageResponse(
       String message, String sessionId) async {
-
-
-    final Map<String,String> map = {
+    final Map<String, String> map = <String, String>{
       'message': message,
       'sessionId': sessionId,
     };
 
-    final Response<dynamic> response = await dio.post(
-      AppConfig().faqChat,
-      data: map,
-      options: Options(
-        responseType: ResponseType.json,
-      ),
-    );
     try {
-      if (response.statusCode == 200) {
-        final result = response.data;
-        final Iterable<dynamic> _list = result['messages'] as Iterable<dynamic>;
-        final List<ChatJsonModel> lists = chatJsonModelFromJson(jsonEncode(_list));
-        return lists;
+      final Response<dynamic> response = await httpService
+          .requestSource(AppConfig().faqChat, 'POST', data: map);
+      final Iterable<dynamic> _list =
+          response.data['messages'] as Iterable<dynamic>;
+      return chatJsonModelFromJson(jsonEncode(_list));
+    } on DioError catch (error) {
+      if (error.type == DioErrorType.receiveTimeout ||
+          error.type == DioErrorType.connectTimeout) {
+        throw ShowError('Server timeout ');
+      } else if (error.type == DioErrorType.other) {
+        throw ShowError('No Internet connection...');
       } else {
-        throw Exception('Unable to Connect');
+        throw ShowError('Something went wrong');
       }
-    } catch (e) {
-      throw Exception('Something went wrong');
     }
   }
 }
