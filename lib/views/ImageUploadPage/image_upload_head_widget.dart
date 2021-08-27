@@ -6,13 +6,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
-import '../../config.dart';
 import '../../viewModels/image_upload_view_model.dart';
 import '../Widgets/loading_text_widget.dart';
+import 'Widget/image_upload_app_bar_widget.dart';
 import 'image_upload_body_widget.dart';
 
 class ImageUploadPageWidget extends StatefulWidget {
-  const ImageUploadPageWidget({Key? key}) : super(key: key);
+  const ImageUploadPageWidget();
 
   @override
   _ImageUploadPageWidgetState createState() => _ImageUploadPageWidgetState();
@@ -67,56 +67,36 @@ class _ImageUploadPageWidgetState extends State<ImageUploadPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final _predictionList =
-    Provider.of<ImageUploadViewModel>(context, listen: false)
+    Provider.of<ImageUploadViewModel>(context, listen: true)
         .fetchPredictions(imagePath);
-    return ChangeNotifierProvider(
-      create: (_) => ImageUploadViewModel(),
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(50),
-          child: AppBar(
-            backgroundColor: AppConfig().primaryColor,
-            leading: IconButton(
-              onPressed: () => Navigator.of(context).pop(),
-              icon: const Icon(Icons.arrow_back),
-            ),
-            title: const Text('Predictions'),
-          ),
-        ),
-        body: SingleChildScrollView(
-          child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FutureBuilder(
-                  future: _predictionList,
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.data == null) {
-                        const LoadingTextWidget(
-                            loadingText:
-                            'Something went wrong. Internet or server error');
-                      } else {
-                        return ImageUploadBodyWidget(
-                          context: context,
-                          model: snapshot.data as Map<String,dynamic>,
-                          imagePath: imagePath,
-                        );
-                      }
-                    }
-                    if (snapshot.connectionState == ConnectionState.waiting ||
-                        snapshot.connectionState == ConnectionState.active) {
-                      return const LoadingTextWidget(
-                          loadingText: 'Loading Please Wait..');
-                    } else {
-                      return const LoadingTextWidget(
-                          loadingText: 'Loading Please Wait..');
-                    }
-                  },
-                ),
-              ],
-            ),
+    return Scaffold(
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: ImageUploadAppBarWidget(),
+      ),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Consumer<ImageUploadViewModel>(
+                builder: (BuildContext context, ImageUploadViewModel model, _) {
+                  if (model.state == ImageUploadNotifierState.loading) {
+                    return const LoadingTextWidget(
+                        loadingText: 'Loading Please Wait');
+                  } else if (model.state == ImageUploadNotifierState.error) {
+                    return const LoadingTextWidget(
+                        loadingText: 'Something went wrong');
+                  } else {
+                    return ImageUploadBodyWidget(
+                        context: context,
+                        model: model.responseList,
+                        foodList: model.foodList,
+                        imagePath: imagePath);
+                  }
+                },
+              )
+            ],
           ),
         ),
       ),

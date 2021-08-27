@@ -1,10 +1,13 @@
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+
 import '../config.dart';
+import '../helper/error_handler.dart';
+import '../helper/http_service.dart';
 
 class WebServiceImageUpload {
-  Dio dio = Dio();
+  final HttpService httpService = HttpService();
   static const String _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   final Random _rnd = Random();
@@ -17,41 +20,42 @@ class WebServiceImageUpload {
       'image': await MultipartFile.fromFile(imagePath,
           filename: getRandomString(15)),
     });
-
-    final Response<dynamic> response = await dio.post(
-      AppConfig().foodApiInference,
-      data: formData,
-      options: Options(
-        responseType: ResponseType.json,
-      ),
-    );
-
-    if (response.statusCode == 200) {
+    try {
+      final Response<dynamic> response = await httpService.requestSource(
+          AppConfig().foodApiInference, 'POST',
+          formData: formData);
       return response.data as Map<String, dynamic>;
-    } else {
-      throw Exception('Unable to Connect');
+    } on DioError catch (error) {
+      if (error.type == DioErrorType.receiveTimeout ||
+          error.type == DioErrorType.connectTimeout) {
+        throw ShowError('Server timeout ');
+      } else if (error.type == DioErrorType.other) {
+        throw ShowError('No Internet connection...');
+      } else {
+        throw ShowError('Something went wrong');
+      }
     }
   }
 
-  Future<bool> categoryImage(String imagePath, String category) async {
+  Future<bool> addCustomCategoryImage(String imagePath, String category) async {
     final FormData formData = FormData.fromMap(<String, dynamic>{
       'category': category,
       'image': await MultipartFile.fromFile(imagePath,
           filename: getRandomString(15)),
     });
-
-    final Response<dynamic> response = await dio.post(
-      AppConfig().foodApiAdd,
-      data: formData,
-      options: Options(
-        responseType: ResponseType.json,
-      ),
-    );
-
-    if (response.statusCode == 200) {
+    try {
+      final Response<dynamic> response = await httpService
+          .requestSource(AppConfig().foodApiAdd, 'POST', formData: formData);
       return true;
-    } else {
-      return false;
+    } on DioError catch (error) {
+      if (error.type == DioErrorType.receiveTimeout ||
+          error.type == DioErrorType.connectTimeout) {
+        throw ShowError('Server timeout ');
+      } else if (error.type == DioErrorType.other) {
+        throw ShowError('No Internet connection...');
+      } else {
+        throw ShowError('Something went wrong');
+      }
     }
   }
 }

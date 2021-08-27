@@ -8,16 +8,20 @@ import '../Widgets/list_widget.dart';
 
 class ImageUploadBodyWidget extends StatelessWidget {
   const ImageUploadBodyWidget(
-      {required this.context, required this.model, required this.imagePath});
+      {required this.context,
+      required this.model,
+      required this.foodList,
+      required this.imagePath});
 
   final BuildContext context;
   final Map<String, dynamic> model;
+  final Map<String, dynamic> foodList;
   final String imagePath;
 
   @override
   Widget build(BuildContext context) {
-    final List<String> keyList = model['predictionList'].keys.toList() as List<String>;
-    final List<String> _foodList = model['foodList'].keys.toList()  as List<String>;
+    final List<String> keyList = model.keys.toList();
+    final List<String> _foodList = foodList.keys.toList();
 
     showToast(String message) {
       Fluttertoast.showToast(
@@ -92,11 +96,11 @@ class ImageUploadBodyWidget extends StatelessWidget {
     }
 
     return Column(
-      children: [
+      children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListView.builder(
-            itemCount: model['predictionList'].length as int,
+            itemCount: model.length,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {
@@ -104,14 +108,14 @@ class ImageUploadBodyWidget extends StatelessWidget {
                   onTap: () {
                     context.read<ImageUploadViewModel>().addCategoryImage(
                         imagePath,
-                        model['predictionList'][keyList[index]].toString());
+                        model[keyList[index]].toString());
                     showToast('Image Successfully Added');
                     Navigator.of(context).pop();
                   },
                   child: ListWidget(
                       foodName: keyList[index].toString(),
                       images:
-                          model['predictionList'][keyList[index]].toString()));
+                          model[keyList[index]].toString()));
             },
           ),
         ),
@@ -122,29 +126,24 @@ class ImageUploadBodyWidget extends StatelessWidget {
             style: TextStyle(fontSize: 15),
           ),
         ),
-        Consumer<ImageUploadViewModel>(
-          builder: (contextBuild, model, _) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: DropdownButton<String>(
-                hint: const Text('Select existing Category'),
-                onChanged: (String? newValue) {
-                  context.read<ImageUploadViewModel>().setCategory(newValue!);
-                },
-                items: _foodList.map<DropdownMenuItem<String>>((String e) {
-                  return DropdownMenuItem<String>(
-                    value: e,
-                    child: Text(e),
-                  );
-                }).toList(),
-                value:
-                    context.read<ImageUploadViewModel>().category.toString() ==
-                            ''
-                        ? _foodList[0]
-                        : context.read<ImageUploadViewModel>().category,
-              ),
-            );
-          },
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: DropdownButton<String>(
+            hint: const Text('Select existing Category'),
+            onChanged: (String? newValue) {
+              context.read<ImageUploadViewModel>().setCategory(newValue!);
+            },
+            items: _foodList.map<DropdownMenuItem<String>>((String e) {
+              return DropdownMenuItem<String>(
+                value: e,
+                child: Text(e),
+              );
+            }).toList(),
+            value:
+                context.read<ImageUploadViewModel>().category.toString() == ''
+                    ? _foodList[0]
+                    : context.read<ImageUploadViewModel>().category,
+          ),
         ),
         ElevatedButton(
           onPressed: () {

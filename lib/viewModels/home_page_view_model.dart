@@ -1,9 +1,8 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:xnara/helper/error_handler.dart';
 import '../services/home_service.dart';
 
-enum HomeNotifierState { loading, loaded }
+enum HomeNotifierState { loading, loaded, error }
 
 class HomePageViewModel extends ChangeNotifier {
   final WebServiceFoodApi webServiceFoodApi = WebServiceFoodApi();
@@ -17,28 +16,32 @@ class HomePageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  late Either<ShowError, Map<String,dynamic>> _foodList;
+  late Map<String, dynamic> _foodList;
 
-  Either<ShowError, Map<String,dynamic>> get foodList => _foodList;
+  Map<String, dynamic> get foodList => _foodList;
 
-  void _setFoodList(Either<ShowError, Map<String,dynamic>> foodList) {
+  void _setFoodList(Map<String, dynamic> foodList) {
     _foodList = foodList;
     notifyListeners();
   }
 
+  late ShowError _error;
+
+  ShowError get error => _error;
+
+  void _setError(ShowError error) {
+    _error = error;
+    notifyListeners();
+  }
+
   fetchFoods() async {
-    await Task(() => webServiceFoodApi.fetchFoodList())
-        .attempt()
-        .map((Either<Object, Map<String,dynamic>> errorMap) =>
-            errorMap.leftMap((Object errorObject) {
-              try {
-                return errorObject as ShowError;
-              } catch (e) {
-                throw errorObject;
-              }
-            }))
-        .run()
-        .then((Either<ShowError, Map<String,dynamic>> value) => _setFoodList(value));
-    _setState(HomeNotifierState.loaded);
+    try {
+      _setFoodList(await webServiceFoodApi.fetchFoodList());
+      _setState(HomeNotifierState.loaded);
+      notifyListeners();
+    } on ShowError catch (error) {
+      _setState(HomeNotifierState.error);
+      _setError(error);
+    }
   }
 }

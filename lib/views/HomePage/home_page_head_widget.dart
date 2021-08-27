@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../helper/error_handler.dart';
-
 import '../../viewModels/home_page_view_model.dart';
 import '../Widgets/head_text_widget.dart';
 import '../Widgets/loading_text_widget.dart';
@@ -25,14 +23,17 @@ class HomePageWidget extends StatelessWidget {
                   if (model.state == HomeNotifierState.loading) {
                     return const LoadingTextWidget(
                         loadingText: 'Loading Please Wait');
+                  } else if (model.state == HomeNotifierState.error) {
+                    return LoadingTextWidget(
+                        loadingText: model.error.toString());
                   } else {
-                    return model.foodList.fold(
-                        (ShowError error) => LoadingTextWidget(
-                            loadingText: error.message.toString()),
-                        (Map<String, dynamic> success) => HomePageBody(
-                              context: context,
-                              foodModel: success,
-                            ));
+                    if (model.foodList.isEmpty) {
+                      return const LoadingTextWidget(
+                          loadingText: 'No FoodList Available');
+                    } else {
+                      return HomePageBody(
+                          context: context, foodModel: model.foodList);
+                    }
                   }
                 },
               ),
