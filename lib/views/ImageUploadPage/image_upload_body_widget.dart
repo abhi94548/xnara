@@ -22,6 +22,7 @@ class ImageUploadBodyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<String> keyList = model.keys.toList();
     final List<String> _foodList = foodList.keys.toList();
+    final TextEditingController customField = TextEditingController();
 
     showToast(String message) {
       Fluttertoast.showToast(
@@ -33,11 +34,10 @@ class ImageUploadBodyWidget extends StatelessWidget {
           fontSize: 16.0);
     }
 
-    Future<void> _displayTextInputDialog(
-        BuildContext context, List<String> foods) async {
+    Future<void> _displayTextInputDialog() async {
       return showDialog(
           context: context,
-          builder: (BuildContext context) {
+          builder: (_) {
             return AlertDialog(
               title: const Text('Enter new category'),
               content: Container(
@@ -47,39 +47,35 @@ class ImageUploadBodyWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                     color: Colors.white),
                 child: Column(
-                  children: [
-                    Autocomplete<String>(
-                      optionsBuilder: (TextEditingValue textEditingValue) {
-                        if (textEditingValue.text == '') {
-                          return const Iterable<String>.empty();
-                        }
-                        return foods.where((String option) {
-                          return option.contains(textEditingValue.text);
-                        });
-                      },
-                      onSelected: (String selection) {
-                        context
-                            .read<ImageUploadViewModel>()
-                            .setCategory(selection);
-                      },
+                  children: <Widget>[
+                    TextFormField(
+                      keyboardType: TextInputType.text,
+                      controller: customField,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        hintText: 'Enter here',
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide:
+                              BorderSide(color: AppConfig().secondaryColor),
+                        ),
+                        contentPadding: const EdgeInsets.all(12),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide:
+                              BorderSide(color: AppConfig().secondaryColor),
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
                           onPressed: () {
-                            if (context
-                                    .read<ImageUploadViewModel>()
-                                    .category
-                                    .toString() !=
-                                '') {
-                              context
-                                  .read<ImageUploadViewModel>()
+                            if (customField.text.isNotEmpty) {
+                              Provider.of<ImageUploadViewModel>(context,
+                                      listen: false)
                                   .addCategoryImage(
-                                      imagePath,
-                                      context
-                                          .read<ImageUploadViewModel>()
-                                          .category
-                                          .toString());
+                                      imagePath, customField.text);
                               showToast('Image Successfully Added');
                               Navigator.of(context)..pop()..pop();
                             } else {
@@ -107,15 +103,13 @@ class ImageUploadBodyWidget extends StatelessWidget {
               return GestureDetector(
                   onTap: () {
                     context.read<ImageUploadViewModel>().addCategoryImage(
-                        imagePath,
-                        model[keyList[index]].toString());
+                        imagePath, model[keyList[index]].toString());
                     showToast('Image Successfully Added');
                     Navigator.of(context).pop();
                   },
                   child: ListWidget(
                       foodName: keyList[index].toString(),
-                      images:
-                          model[keyList[index]].toString()));
+                      images: model[keyList[index]].toString()));
             },
           ),
         ),
@@ -160,7 +154,7 @@ class ImageUploadBodyWidget extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            _displayTextInputDialog(context, _foodList);
+            _displayTextInputDialog();
           },
           child: const Text('Add Custom Category'),
         )

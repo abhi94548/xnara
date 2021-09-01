@@ -66,6 +66,11 @@ class _ImageUploadPageWidgetState extends State<ImageUploadPageWidget> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Provider.of<ImageUploadViewModel>(context, listen: true)
         .fetchPredictions(imagePath);

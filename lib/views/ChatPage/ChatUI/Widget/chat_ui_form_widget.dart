@@ -10,7 +10,6 @@ class ChatUIFormWidget extends StatelessWidget {
   final BuildContext context;
   final Function scrollFunction;
 
-  final GlobalKey<FormState> _messageBoxKey = GlobalKey<FormState>();
   final TextEditingController myController = TextEditingController();
 
   @override
@@ -21,63 +20,60 @@ class ChatUIFormWidget extends StatelessWidget {
           border: Border(
         top: BorderSide(color: AppConfig().secondaryColor),
       )),
-      child: Form(
-        key: _messageBoxKey,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            const SizedBox(
-              width: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.75,
-                child: TextFormField(
-                  keyboardType: TextInputType.text,
-                  controller: myController,
-                  onTap: () => scrollFunction(),
-                  decoration: InputDecoration(
-                    isDense: true,
-                    hintText: 'Enter here',
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(color: AppConfig().secondaryColor),
-                    ),
-                    contentPadding: const EdgeInsets.all(12),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(color: AppConfig().secondaryColor),
-                    ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          const SizedBox(
+            width: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.75,
+              child: TextFormField(
+                keyboardType: TextInputType.text,
+                controller: myController,
+                onTap: () => scrollFunction(),
+                decoration: InputDecoration(
+                  isDense: true,
+                  hintText: 'Enter here',
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(color: AppConfig().secondaryColor),
+                  ),
+                  contentPadding: const EdgeInsets.all(12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(color: AppConfig().secondaryColor),
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: FloatingActionButton(
-                mini: true,
-                onPressed: () {
-                  if (myController.text.isNotEmpty &&
-                      context.read<ChatUIViewModel>().state !=
-                          ChatNotifierState.error) {
-                    context
-                        .read<ChatUIViewModel>()
-                        .addUserMessage(myController.text);
-                    context
-                        .read<ChatUIViewModel>()
-                        .sendMessage(myController.text);
-                    myController.clear();
-                    scrollFunction();
-                  }
-                },
-                elevation: 1.0,
-                backgroundColor: AppConfig().primaryColor,
-                child: const Icon(Icons.send),
-              ),
-            )
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FloatingActionButton(
+              mini: true,
+              onPressed: () {
+                if (myController.text.isNotEmpty &&
+                    context.read<ChatUIViewModel>().state !=
+                        ChatNotifierState.error) {
+                  context
+                      .read<ChatUIViewModel>()
+                      .addUserMessage(myController.text);
+                  context
+                      .read<ChatUIViewModel>()
+                      .sendMessage(myController.text);
+                  myController.clear();
+                  scrollFunction();
+                }
+              },
+              elevation: 1.0,
+              backgroundColor: AppConfig().primaryColor,
+              child: const Icon(Icons.send),
+            ),
+          )
+        ],
       ),
     );
   }
